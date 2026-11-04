@@ -1,0 +1,151 @@
+﻿area_id,area,nivel_geografico,grupo_id,grupo_despesa,fonte,n_periodos,n_ausentes
+1501,Belém - PA,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7445,Habitação,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7558,Vestuário,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7625,Transportes,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7766,Educação,IBGE/SIDRA,177,0
+1501,Belém - PA,N7,7786,Comunicação,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7445,Habitação,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7558,Vestuário,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7625,Transportes,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7766,Educação,IBGE/SIDRA,177,0
+2301,Fortaleza - CE,N7,7786,Comunicação,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7445,Habitação,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7558,Vestuário,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7625,Transportes,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7766,Educação,IBGE/SIDRA,177,0
+2601,Recife - PE,N7,7786,Comunicação,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7445,Habitação,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7558,Vestuário,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7625,Transportes,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7766,Educação,IBGE/SIDRA,177,0
+2901,Salvador - BA,N7,7786,Comunicação,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7445,Habitação,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7558,Vestuário,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7625,Transportes,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7766,Educação,IBGE/SIDRA,177,0
+3101,Belo Horizonte - MG,N7,7786,Comunicação,IBGE/SIDRA,177,0
+3201,Grande Vitória - ES,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7445,Habitação,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7486,Artigos de residência,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7558,Vestuário,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7625,Transportes,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7712,Despesas pessoais,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7766,Educação,IBGE/SIDRA,177,24
+3201,Grande Vitória - ES,N7,7786,Comunicação,IBGE/SIDRA,177,24
+3301,Rio de Janeiro - RJ,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7445,Habitação,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7558,Vestuário,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7625,Transportes,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7766,Educação,IBGE/SIDRA,177,0
+3301,Rio de Janeiro - RJ,N7,7786,Comunicação,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7445,Habitação,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7558,Vestuário,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7625,Transportes,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7766,Educação,IBGE/SIDRA,177,0
+3501,São Paulo - SP,N7,7786,Comunicação,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7445,Habitação,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7558,Vestuário,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7625,Transportes,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7766,Educação,IBGE/SIDRA,177,0
+4101,Curitiba - PR,N7,7786,Comunicação,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7445,Habitação,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7486,Artigos de residência,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7558,Vestuário,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7625,Transportes,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7712,Despesas pessoais,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7766,Educação,IBGE/SIDRA,177,0
+4301,Porto Alegre - RS,N7,7786,Comunicação,IBGE/SIDRA,177,0
+1200401,Rio Branco - AC,N6,7170,Alimentação e bebidas,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7445,Habitação,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7486,Artigos de residência,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7558,Vestuário,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7625,Transportes,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7712,Despesas pessoais,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7766,Educação,IBGE/SIDRA,177,76
+1200401,Rio Branco - AC,N6,7786,Comunicação,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7170,Alimentação e bebidas,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7445,Habitação,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7486,Artigos de residência,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7558,Vestuário,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7625,Transportes,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7712,Despesas pessoais,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7766,Educação,IBGE/SIDRA,177,76
+2111300,São Luís - MA,N6,7786,Comunicação,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7170,Alimentação e bebidas,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7445,Habitação,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7486,Artigos de residência,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7558,Vestuário,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7625,Transportes,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7712,Despesas pessoais,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7766,Educação,IBGE/SIDRA,177,76
+2800308,Aracaju - SE,N6,7786,Comunicação,IBGE/SIDRA,177,76
+5002704,Campo Grande - MS,N6,7170,Alimentação e bebidas,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7445,Habitação,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7486,Artigos de residência,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7558,Vestuário,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7625,Transportes,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7712,Despesas pessoais,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7766,Educação,IBGE/SIDRA,177,24
+5002704,Campo Grande - MS,N6,7786,Comunicação,IBGE/SIDRA,177,24
+5208707,Goiânia - GO,N6,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7445,Habitação,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7486,Artigos de residência,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7558,Vestuário,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7625,Transportes,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7712,Despesas pessoais,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7766,Educação,IBGE/SIDRA,177,0
+5208707,Goiânia - GO,N6,7786,Comunicação,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7170,Alimentação e bebidas,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7445,Habitação,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7486,Artigos de residência,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7558,Vestuário,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7625,Transportes,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7660,Saúde e cuidados pessoais,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7712,Despesas pessoais,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7766,Educação,IBGE/SIDRA,177,0
+5300108,Brasília - DF,N6,7786,Comunicação,IBGE/SIDRA,177,0
+,Brasil,nacional,,selic_efetiva_aa,BCB/SGS,177,0
+,Brasil,nacional,,cambio_usd_brl,BCB/SGS,177,0
+,Brasil,nacional,,ic_br,BCB/SGS,177,0
+,Brasil,nacional,,ibc_br_sa,BCB/SGS,177,1
+,Brasil,nacional,,desocupacao,BCB/SGS,177,2
+,Brasil,nacional,,ipca_brasil,BCB/SGS,177,0
