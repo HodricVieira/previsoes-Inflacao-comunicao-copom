@@ -9,7 +9,8 @@ Focus.
 - `src/coleta_dados.py`: coleta e valida as fontes oficiais.
 - `src/analise_eda.py`: estatísticas, valores ausentes, sinalização IQR,
   decomposição STL, ADF/KPSS, ACF/PACF e gráficos.
-- `notebooks/analise_exploratoria.ipynb`: fluxo reprodutível da coleta e EDA.
+- `notebooks/analise_exploratoria.ipynb`: EDA independente a partir do painel
+  tratado `dados/tratados/painel_ipca_macro.csv`.
 - `dados/tratados/ipca_painel.csv`: observações em formato longo
   (mês × área × grupo).
 - `dados/tratados/macro_mensal.csv`: séries macroeconômicas mensais nacionais.
@@ -17,6 +18,8 @@ Focus.
   mês de referência e base de cálculo preservados.
 - `dados/tratados/painel_ipca_macro.csv`: IPCA e variáveis macroeconômicas
   unidos pelo mês, sem incorporar expectativas com risco de vazamento temporal.
+- `dados/tratados/dicionario_painel_ipca_macro.csv`: dicionário das 14 colunas
+  do painel integrado, com descrição, fonte, unidade, frequência e tratamento.
 - `dados/tratados/dicionario_variaveis.csv`: fonte, identificador, unidade,
   frequência, período e tratamento.
 - `dados/tratados/*.csv`: tabelas de resultados da EDA.
@@ -48,8 +51,10 @@ python src\analise_eda.py
 ```
 
 Também é possível executar as células de
-`notebooks/analise_exploratoria.ipynb` em sequência. A coleta consulta as APIs
-ao vivo e atualiza os CSVs; não depende de arquivos baixados manualmente.
+`notebooks/analise_exploratoria.ipynb` em sequência. O notebook usa somente o
+CSV integrado incluído em `dados/tratados/`; não consulta APIs nem importa
+módulos do projeto. Para atualizar os dados, execute separadamente os scripts
+de coleta e análise acima.
 
 ## Decisões de tratamento
 
