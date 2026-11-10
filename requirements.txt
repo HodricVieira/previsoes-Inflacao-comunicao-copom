@@ -3,3 +3,4 @@ requests>=2.31
 matplotlib>=3.8
 statsmodels>=0.14
 ipykernel>=6.29
+torch>=2.15

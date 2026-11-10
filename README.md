@@ -48,7 +48,15 @@ No PowerShell, na pasta do projeto:
 python -m pip install -r requirements.txt
 python src\coleta_dados.py
 python src\analise_eda.py
+python src\analise_correlacao.py
+python src\modelagem_previsao.py
 ```
+
+O módulo de correlação identifica vínculos entre IPCA e variáveis macro, com
+lag e VIF por unidade, enquanto o script de modelagem compara baseline, OLS com
+lags, SARIMAX, VAR e LSTM em validação temporal fora da amostra. O LSTM usa
+janelas de 12 meses e previsões mensais walk-forward; instale as dependências
+incluindo PyTorch com `python -m pip install -r requirements.txt`.
 
 Também é possível executar as células de
 `notebooks/analise_exploratoria.ipynb` em sequência. O notebook usa somente o
