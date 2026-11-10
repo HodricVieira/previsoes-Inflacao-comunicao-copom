@@ -45,6 +45,25 @@ def _load_base() -> pd.DataFrame:
         .rename(columns={TARGET: "ipca_mensal_median"})
     )
     merged = series.merge(macro, on="data", how="inner")
+    sentiment_path = DATA_DIR / "sentimento_mensal.csv"
+    if sentiment_path.exists():
+        sentiment = pd.read_csv(
+            sentiment_path, parse_dates=["data"], encoding="utf-8-sig"
+        )
+        if "escore_llm" in sentiment and sentiment["escore_llm"].notna().any():
+            sentiment = sentiment.sort_values("data")
+            merged = merged.merge(
+                sentiment[["data", "escore_llm", "n_documentos_llm"]],
+                on="data",
+                how="left",
+                validate="one_to_one",
+            )
+            merged["sentimento_llm_lag1"] = (
+                merged["escore_llm"].shift(1).ffill()
+            )
+            merged["n_documentos_llm_lag1"] = (
+                merged["n_documentos_llm"].shift(1).fillna(0)
+            )
     return merged.sort_values("data").reset_index(drop=True)
 
 
@@ -134,6 +153,93 @@ def _sarimax_forecast(train: pd.DataFrame, test: pd.DataFrame) -> pd.Series:
     fitted = model.fit(disp=False)
     forecast = fitted.forecast(steps=len(test), exog=x_test)
     return pd.Series(forecast.to_numpy(dtype=float), index=test.index)
+
+
+def _sarimax_walk_forward(
+    df: pd.DataFrame, split_index: int, features: list[str]
+) -> pd.Series:
+    """Issue a one-month forecast at each origin, using only then-known history."""
+    forecast_values: list[float] = []
+    for current_index in range(split_index, len(df)):
+        training = df.iloc[:current_index][
+            ["ipca_mensal_median", *features]
+        ].dropna()
+        current = df.iloc[[current_index]][features]
+        if len(training) < 36 or current.isna().any(axis=None):
+            forecast_values.append(float("nan"))
+            continue
+        model = SARIMAX(
+            training["ipca_mensal_median"].astype(float),
+            exog=training[features].astype(float),
+            order=(1, 0, 1),
+            seasonal_order=(1, 0, 0, 12),
+            enforce_stationarity=False,
+            enforce_invertibility=False,
+        )
+        fitted = model.fit(disp=False)
+        forecast = fitted.forecast(steps=1, exog=current.astype(float))
+        forecast_values.append(float(forecast.iloc[0]))
+    return pd.Series(forecast_values, index=df.index[split_index:], dtype=float)
+
+
+def _evaluate_sentiment_effect(df: pd.DataFrame) -> pd.DataFrame | None:
+    sentiment_features = [
+        "sentimento_llm_lag1",
+        "n_documentos_llm_lag1",
+    ]
+    if any(feature not in df for feature in sentiment_features):
+        return None
+
+    split_index = len(df) - 12
+    regular_features = [
+        column
+        for column in df.columns
+        if column.startswith("ipca_lag_")
+        or any(column.startswith(f"{feature}_lag_") for feature in EXOG_FEATURES)
+    ]
+    complete_training = df.iloc[:split_index][
+        ["ipca_mensal_median", *regular_features, *sentiment_features]
+    ].dropna()
+    if len(complete_training) < 36:
+        return None
+    predictions = {
+        "sarimax_sem_sentimento": _sarimax_walk_forward(
+            df, split_index, regular_features
+        ),
+        "sarimax_com_sentimento": _sarimax_walk_forward(
+            df, split_index, [*regular_features, *sentiment_features]
+        ),
+    }
+    forecast_frame = pd.DataFrame(
+        {
+            "observado": df.iloc[split_index:]["ipca_mensal_median"].to_numpy(
+                dtype=float
+            ),
+            **{
+                model_name: forecast.to_numpy(dtype=float)
+                for model_name, forecast in predictions.items()
+            },
+        }
+    ).dropna()
+    if forecast_frame.empty:
+        return None
+    rows = []
+    for model_name in predictions:
+        rows.append(
+            {
+                "modelo": model_name,
+                "protocolo": "walk-forward, horizonte de 1 mês",
+                "n_previsoes": len(forecast_frame),
+                "periodo_teste_inicio": df.iloc[
+                    split_index + forecast_frame.index.min()
+                ]["data"].date(),
+                "periodo_teste_fim": df.iloc[
+                    split_index + forecast_frame.index.max()
+                ]["data"].date(),
+                **_metrics(forecast_frame["observado"], forecast_frame[model_name]),
+            }
+        )
+    return pd.DataFrame(rows)
 
 
 def _var_forecast(train: pd.DataFrame, test: pd.DataFrame) -> pd.Series:
@@ -268,6 +374,23 @@ def gerar_modelos() -> pd.DataFrame:
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     metrics = _evaluate_models()
     metrics.to_csv(DATA_DIR / "avaliacao_modelos.csv", index=False, encoding="utf-8-sig")
+    sentiment_comparison = _evaluate_sentiment_effect(
+        _build_lagged_features(_load_base())
+    )
+    sentiment_output = DATA_DIR / "impacto_sentimento_sarimax.csv"
+    if sentiment_comparison is not None:
+        sentiment_comparison.to_csv(
+            sentiment_output,
+            index=False,
+            encoding="utf-8-sig",
+        )
+        print("\nComparação SARIMAX com e sem sentimento:")
+        print(sentiment_comparison.to_string(index=False))
+    else:
+        print(
+            "\nComparação com sentimento não executada: faltam escores LLM "
+            "com cobertura suficiente no treino e no teste."
+        )
     print(metrics.to_string(index=False))
     return metrics
 
