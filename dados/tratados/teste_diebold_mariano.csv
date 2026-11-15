@@ -1,0 +1,10 @@
+﻿modelo_1,modelo_2,horizonte_meses,n_pares,dm_stat_mse,p_valor_mse,dm_stat_mae,p_valor_mae
+var_multivariado,sarimax_exogeno,1,12,-0.0433,0.9662,-0.2924,0.7754
+var_multivariado,sarimax_exogeno,2,11,-0.1075,0.9165,-0.0907,0.9295
+var_multivariado,sarimax_exogeno,3,10,0.1343,0.8961,0.6254,0.5472
+var_multivariado,focus_mediana,1,12,0.2468,0.8096,0.168,0.8697
+var_multivariado,focus_mediana,2,11,1.6649,0.1269,1.0944,0.2995
+var_multivariado,focus_mediana,3,10,1.7628,0.1118,1.7892,0.1072
+var_multivariado,baseline_naive_sazonal,1,12,-0.5921,0.5657,-0.0654,0.949
+var_multivariado,baseline_naive_sazonal,2,11,0.6753,0.5148,1.1277,0.2858
+var_multivariado,baseline_naive_sazonal,3,10,1.2322,0.2491,2.131,0.0619
