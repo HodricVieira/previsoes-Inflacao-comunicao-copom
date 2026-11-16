@@ -1,0 +1,3 @@
+﻿modelo,protocolo,n_previsoes,periodo_teste_inicio,periodo_teste_fim,mae,rmse,mape_pct,smape_pct,mase
+sarimax_sem_sentimento,"walk-forward, horizonte de 1 mês",12,2025-10-01,2026-09-01,0.13286704201313973,0.1668319291912722,108.83790892686737,63.08119828250396,0.8673812831718319
+sarimax_com_sentimento,"walk-forward, horizonte de 1 mês",12,2025-10-01,2026-09-01,0.1429898777086564,0.17712516740769754,116.02972145574138,70.16787823155305,0.9334650770298043

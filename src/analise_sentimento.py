@@ -440,7 +440,23 @@ def preparar_trechos() -> pd.DataFrame:
     return chunks_frame
 
 
+def _load_dotenv() -> None:
+    env_path = ROOT / ".env"
+    if not env_path.exists():
+        return
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        key = key.strip()
+        value = value.strip().strip('"').strip("'")
+        if key and key not in os.environ:
+            os.environ[key] = value
+
+
 def _llm_configuration() -> tuple[str, str, str]:
+    _load_dotenv()
     base_url = os.getenv("COPOM_LLM_BASE_URL", "https://api.openai.com/v1").rstrip("/")
     api_key = os.getenv("COPOM_LLM_API_KEY", "")
     model = os.getenv("COPOM_LLM_MODEL", "gpt-4o-mini")
@@ -474,20 +490,43 @@ def _classify_with_llm(
     headers = {"Content-Type": "application/json"}
     if api_key:
         headers["Authorization"] = f"Bearer {api_key}"
-    response = session.post(
-        f"{base_url}/chat/completions",
-        headers=headers,
-        json={
-            "model": model,
-            "temperature": 0,
-            "messages": [
-                {"role": "system", "content": system_prompt},
-                {"role": "user", "content": text},
-            ],
-        },
-        timeout=120,
-    )
-    response.raise_for_status()
+    payload = {
+        "model": model,
+        "temperature": 0,
+        "messages": [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": text},
+        ],
+    }
+    response = None
+    last_exc: Exception | None = None
+    for attempt in range(4):
+        try:
+            response = session.post(
+                f"{base_url}/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=(15, 180),
+            )
+            if response.status_code in {429, 500, 502, 503, 504} and attempt < 3:
+                time.sleep(2 ** (attempt + 1))
+                continue
+            break
+        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
+            last_exc = exc
+            if attempt < 3:
+                time.sleep(2 ** (attempt + 1))
+                continue
+            raise
+    if response is None:
+        assert last_exc is not None
+        raise last_exc
+    if not response.ok:
+        raise requests.HTTPError(
+            f"{response.status_code} {response.reason} para {response.url} "
+            f"(modelo={model}): {response.text}",
+            response=response,
+        )
     content = response.json()["choices"][0]["message"]["content"]
     if not isinstance(content, str):
         raise ValueError("Resposta do LLM sem conteúdo textual.")
@@ -553,7 +592,61 @@ def classificar_trechos(sample_only: bool = False) -> pd.DataFrame:
     return chunks
 
 
-def agregar_sentimento() -> tuple[pd.DataFrame, pd.DataFrame]:
+def importar_rotulos_json(
+    json_path: Path | None = None,
+    model_name: str = "llm_externo_json",
+) -> pd.DataFrame:
+    """Importa rótulos pré-classificados de um arquivo JSON para trechos_sentimento.csv."""
+    source_path = json_path or (DATA_DIR / "rotulo_llm.json")
+    if not source_path.exists():
+        raise FileNotFoundError(f"Arquivo JSON não encontrado: {source_path}")
+    raw_items = json.loads(source_path.read_text(encoding="utf-8"))
+    if not isinstance(raw_items, list) or not raw_items:
+        raise ValueError("O JSON deve ser uma lista não vazia de objetos.")
+
+    chunks = preparar_trechos()
+    valid_ids = set(chunks["trecho_id"])
+    updates: dict[str, tuple[float, float, str, str]] = {}
+    for item in raw_items:
+        trecho_id = str(item["trecho_id"]).strip()
+        if trecho_id not in valid_ids:
+            raise ValueError(f"trecho_id desconhecido no JSON: {trecho_id}")
+        score = float(item["escore"])
+        confidence = float(item["confianca"])
+        if not math.isfinite(score) or not -1 <= score <= 1:
+            raise ValueError(f"Escore fora de [-1, 1] para {trecho_id}: {score}")
+        if not math.isfinite(confidence) or not 0 <= confidence <= 1:
+            raise ValueError(f"Confiança fora de [0, 1] para {trecho_id}: {confidence}")
+        justification = str(item.get("justificativa", "")).strip()
+        updates[trecho_id] = (score, confidence, justification, _label_for_score(score))
+
+    matched_mask = chunks["trecho_id"].isin(updates)
+    for idx in chunks.index[matched_mask]:
+        tid = str(chunks.at[idx, "trecho_id"])
+        score, conf, just, label = updates[tid]
+        chunks.loc[
+            idx,
+            [
+                "escore_llm",
+                "confianca_llm",
+                "justificativa_llm",
+                "rotulo_llm",
+                "modelo_llm",
+                "versao_prompt",
+            ],
+        ] = [score, conf, just, label, model_name, PROMPT_VERSION]
+
+    chunks.to_csv(
+        DATA_DIR / "trechos_sentimento.csv", index=False, encoding="utf-8-sig"
+    )
+    print(
+        f"Importados {int(matched_mask.sum())} rótulos de {source_path.name} "
+        f"para trechos_sentimento.csv."
+    )
+    return chunks
+
+
+def agregar_sentimento(allow_partial: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Agrega escores por documento e mês de publicação."""
     chunks_path = DATA_DIR / "trechos_sentimento.csv"
     documents_path = DATA_DIR / "documentos_copom.csv"
@@ -590,10 +683,16 @@ def agregar_sentimento() -> tuple[pd.DataFrame, pd.DataFrame]:
             validate="one_to_one",
         )
     )
-    document_scores.loc[
-        document_scores["n_trechos_llm"] != document_scores["n_trechos"],
-        "escore_llm",
-    ] = np.nan
+    if not allow_partial:
+        document_scores.loc[
+            document_scores["n_trechos_llm"] != document_scores["n_trechos"],
+            "escore_llm",
+        ] = np.nan
+    else:
+        document_scores.loc[
+            document_scores["n_trechos_llm"] == 0,
+            "escore_llm",
+        ] = np.nan
     document_scores.to_csv(
         DATA_DIR / "sentimento_documentos.csv",
         index=False,
@@ -832,7 +931,26 @@ def _main() -> None:
         action="store_true",
         help="Classifica apenas os 200 trechos separados para validação humana.",
     )
-    commands.add_parser("agregar", help="Gera escores por documento e mês.")
+    import_cmd = commands.add_parser(
+        "importar-json",
+        help="Importa rótulos LLM prontos de um arquivo JSON (ex.: rotulo_llm.json).",
+    )
+    import_cmd.add_argument(
+        "--arquivo",
+        default=str(DATA_DIR / "rotulo_llm.json"),
+        help="Caminho do arquivo JSON com trecho_id, escore, confianca e justificativa.",
+    )
+    import_cmd.add_argument(
+        "--modelo",
+        default="llm_externo_json",
+        help="Identificador do modelo a registrar em modelo_llm.",
+    )
+    agg_cmd = commands.add_parser("agregar", help="Gera escores por documento e mês.")
+    agg_cmd.add_argument(
+        "--permitir-parcial",
+        action="store_true",
+        help="Mantém escore de documentos com ao menos 1 trecho classificado (ex.: amostra de 200 docs).",
+    )
     commands.add_parser("validar", help="Calcula kappa após a rotulagem manual.")
     args = parser.parse_args()
 
@@ -842,8 +960,10 @@ def _main() -> None:
         preparar_trechos()
     elif args.command == "classificar":
         classificar_trechos(sample_only=args.somente_amostra)
+    elif args.command == "importar-json":
+        importar_rotulos_json(Path(args.arquivo), model_name=args.modelo)
     elif args.command == "agregar":
-        agregar_sentimento()
+        agregar_sentimento(allow_partial=args.permitir_parcial)
     elif args.command == "validar":
         validar_rotulacao()
 
