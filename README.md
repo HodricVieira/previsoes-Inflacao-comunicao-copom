@@ -21,6 +21,8 @@ Focus.
   autocontido, modificável e visualizável cobrindo todas as 7 etapas obrigatórias.
 - `notebooks/analise_exploratoria.ipynb`: EDA independente a partir do painel
   tratado `dados/tratados/painel_ipca_macro.csv`.
+- `AGENTS.md`: diretrizes operacionais, arquitetura e invariantes metodológicas para agentes de IA.
+- `DOCUMENTACAO.md`: documentação técnica completa do pipeline, CLI, catálogo de bases e notebooks.
 - `relatorio_tecnico.md`: relatório técnico curto com metodologia, resultados e limitações.
 - `slides_apresentacao.md`: slides da apresentação em formato Marp.
 - `dados/tratados/ipca_painel.csv`: observações em formato longo
