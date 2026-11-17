@@ -9,12 +9,20 @@ Focus.
 - `src/coleta_dados.py`: coleta e valida as fontes oficiais.
 - `src/analise_eda.py`: estatísticas, valores ausentes, sinalização IQR,
   decomposição STL, ADF/KPSS, ACF/PACF e gráficos.
+- `src/analise_correlacao.py`: matrizes de Pearson/Spearman, CCF por defasagem,
+  causalidade de Granger, VIF com constante e conclusão da seleção de variáveis.
 - `src/analise_sentimento.py`: coleta atas e comunicados do Copom, prepara
-  trechos para rotulagem manual/LLM e agrega escores por mês.
-- `src/modelagem_previsao.py`: compara modelos e, quando há escores LLM,
-  avalia o SARIMAX com e sem sentimento em walk-forward.
+  trechos, classifica via LLM (lendo `.env`) ou importa JSON (`rotulo_llm.json`),
+  agrega escores por mês e calcula kappa de Cohen.
+- `src/modelagem_previsao.py`: compara 4 famílias de modelos + Focus em
+  walk-forward ($h = 1, 2, 3$ meses), prevê no painel completo (`16 áreas × 9 grupos`),
+  calcula Diebold-Mariano, intervalos de previsão (80%/95%) e impacto do sentimento no SARIMAX.
+- `notebooks/projeto_completo_reprodutivel.ipynb`: notebook completo,
+  autocontido, modificável e visualizável cobrindo todas as 7 etapas obrigatórias.
 - `notebooks/analise_exploratoria.ipynb`: EDA independente a partir do painel
   tratado `dados/tratados/painel_ipca_macro.csv`.
+- `relatorio_tecnico.md`: relatório técnico curto com metodologia, resultados e limitações.
+- `slides_apresentacao.md`: slides da apresentação em formato Marp.
 - `dados/tratados/ipca_painel.csv`: observações em formato longo
   (mês × área × grupo).
 - `dados/tratados/macro_mensal.csv`: séries macroeconômicas mensais nacionais.
@@ -30,6 +38,8 @@ Focus.
   comunicados coletados pela API aberta do BCB.
 - `dados/tratados/trechos_sentimento.csv`: trechos, escores LLM e léxico de
   referência.
+- `dados/tratados/rotulo_llm.json`: rótulos LLM importados para os 200 trechos
+  representativos de documentos distintos.
 - `dados/tratados/rotulacao_manual.csv`: amostra reprodutível para validação
   humana; os rótulos devem ser preenchidos pelos anotadores.
 - `dados/tratados/sentimento_mensal.csv`: escores LLM agregados por mês para
@@ -38,8 +48,11 @@ Focus.
   sinal nacional do Copom defasado e repetido por área e grupo.
 - `dados/tratados/dicionario_sentimento.csv`: definições das variáveis de
   sentimento e suas regras de agregação.
-- `dados/tratados/*.csv`: tabelas de resultados da EDA.
-- `figuras/*.png`: gráficos gerados pela EDA.
+- `dados/tratados/*.csv`: tabelas de resultados da EDA, correlação/Granger/VIF,
+  avaliação walk-forward (`avaliacao_modelos.csv`, `avaliacao_modelos_por_horizonte.csv`,
+  `avaliacao_painel_area_grupo.csv`, `teste_diebold_mariano.csv`,
+  `previsoes_walk_forward.csv`) e impacto do sentimento (`impacto_sentimento_sarimax.csv`).
+- `figuras/*.png`: gráficos gerados pela EDA, correlação/CCF e previsões com intervalos.
 
 ## Fontes
 
@@ -70,10 +83,12 @@ python src\analise_sentimento.py preparar
 python src\modelagem_previsao.py
 ```
 
-O módulo de correlação identifica vínculos entre IPCA e variáveis macro, com
-lag e VIF por unidade, enquanto o script de modelagem compara baseline, OLS com
-lags, SARIMAX, VAR e LSTM em validação temporal fora da amostra. O LSTM usa
-janelas de 12 meses e previsões mensais walk-forward.
+O módulo de correlação gera matrizes de Pearson/Spearman, CCF por defasagem,
+testes de causalidade de Granger, VIF com constante (nível e 1ª diferença) e
+conclusão de seleção de variáveis. O script de modelagem compara Focus, baseline
+naïve sazonal, VAR, SARIMAX, Ridge, Random Forest e LSTM em validação temporal
+walk-forward ($h = 1, 2, 3$ meses), além de modelos de painel (`16 áreas × 9 grupos`),
+teste de Diebold-Mariano e intervalos de previsão de 80% e 95%.
 
 ### Análise de sentimento
 
@@ -90,12 +105,16 @@ com uma avaliação positiva/negativa da economia. A planilha omite escores
 automáticos para manter a anotação cega e o script preserva os rótulos se a
 preparação for repetida.
 
-Para classificar os trechos com um endpoint OpenAI-compatible, configure
-`COPOM_LLM_API_KEY`, `COPOM_LLM_MODEL` (padrão `gpt-4o-mini`) e, se necessário,
-`COPOM_LLM_BASE_URL` (padrão `https://api.openai.com/v1`), depois execute:
+Para classificar os trechos via API OpenAI-compatible (ou importar rótulos já
+gerados em `dados/tratados/rotulo_llm.json`), configure `.env` (ou variáveis
+de ambiente `COPOM_LLM_API_KEY`, `COPOM_LLM_MODEL` e `COPOM_LLM_BASE_URL`):
 
 ```powershell
 python src\analise_sentimento.py classificar --somente-amostra
+# ou importar JSON pronto e agregar mantendo documentos com amostra classificada:
+python src\analise_sentimento.py importar-json
+python src\analise_sentimento.py agregar --permitir-parcial
+python src\modelagem_previsao.py
 ```
 
 Esse modo classifica apenas os 200 trechos de validação; a planilha manual não
@@ -128,10 +147,10 @@ automaticamente. Os escores do Copom são nacionais e, no painel, são repetidos
 por área/grupo; isso não implica que exista sentimento local específico.
 
 Também é possível executar as células de
-`notebooks/analise_exploratoria.ipynb` em sequência. O notebook usa somente o
-CSV integrado incluído em `dados/tratados/`; não consulta APIs nem importa
-módulos do projeto. Para atualizar os dados, execute separadamente os scripts
-de coleta e análise acima.
+`notebooks/projeto_completo_reprodutivel.ipynb` (todas as 7 etapas obrigatórias,
+com parâmetros modificáveis na Seção 0) ou `notebooks/analise_exploratoria.ipynb`
+em sequência. Os notebooks leem os arquivos tratados de `dados/tratados/`; para
+atualizar os dados a partir das APIs, execute separadamente os scripts em `src/`.
 
 ## Decisões de tratamento
 
