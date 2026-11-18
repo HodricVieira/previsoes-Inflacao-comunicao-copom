@@ -97,12 +97,12 @@ Lê automaticamente as variáveis de ambiente ou o arquivo `.env` (`_load_dotenv
 - **Modelos na série nacional (`ipca_mensal_median`):**
   1. `focus_mediana`: mediana das expectativas Focus coletadas no mês de origem $t$ para $t+h$ (`base_calculo == 0`).
   2. `baseline_naive_sazonal`: repetição sazonal $y_{t+h-12}$.
-  3. `var_multivariado`: `VAR(4)` sobre `[ipca_mensal_median, diff1(macro)]`.
-  4. `sarimax_exogeno`: `SARIMAX(1,0,1)(1,0,0,12)` com exógenas disponíveis na origem.
-  5. `regressao_ridge`: `StandardScaler + Ridge(alpha=10.0)` direto por horizonte com lags `1, 3, 6, 12` e janelas móveis (`mm_3m`, `mm_6m`, `std_3m`, `diff1`).
-  6. `random_forest`: `RandomForestRegressor(n_estimators=200, max_depth=6)` direto por horizonte com as mesmas features.
-  7. `lstm_multivariado`: `_LSTMRegressor` em PyTorch (`lookback=12`, camada oculta `16`, `120` épocas) com previsão recursiva $h=1,2,3$.
-- **Previsão no painel completo (`16 áreas × 9 grupos`):** `ridge_painel`, `random_forest_painel` e `baseline_naive_sazonal_painel` para $h = 1, 2, 3$.
+  3. `var_multivariado`: `VAR(1)` sobre `[ipca_mensal_median, diff1(macro)]` com exógenas alinhadas ao mês-alvo (`focus_tau`, `y_lag12`, `perfil_mes`).
+  4. `sarimax_exogeno`: `SARIMAX(1,0,0)` com exógenas alinhadas ao mês-alvo (`focus_tau`, `y_lag12`, `perfil_mes` e defasagens macroeconômicas selecionadas na Etapa 2).
+  5. `regressao_ridge`: `StandardScaler + RidgeCV(alphas=np.logspace(0, 3, 25))` direto por horizonte com `focus_tau`, `y_lag12`, `perfil_mes`, nível e média móvel 3m do IPCA e defasagens macroeconômicas da Etapa 2.
+  6. `random_forest`: `RandomForestRegressor(n_estimators=200, max_depth=3, min_samples_leaf=8)` direto por horizonte prevendo o ajuste residual sobre a âncora Focus-sazonal (`0,75 · focus_tau + 0,25 · y_lag12`).
+  7. `lstm_multivariado`: `_LSTMRegressor` em PyTorch (`lookback=12`, camada oculta `8`, `weight_decay=0.25`, `80` épocas) prevendo o resíduo padronizado sobre a âncora Focus-sazonal em todas as 33 previsões.
+- **Previsão no painel completo (`16 áreas × 9 grupos`):** `ridge_painel` (`RidgeCV`), `random_forest_painel` e `baseline_naive_sazonal_painel` para $h = 1, 2, 3$, com efeitos fixos via `OneHotEncoder` (`area_id`, `grupo_id`), perfil sazonal local in-sample e mediana Focus.
 - **Métricas, teste estatístico e intervalos:** MAE, RMSE, MAPE, sMAPE e MASE; teste bilateral de **Diebold-Mariano** com variância HAC de Bartlett (`_diebold_mariano`); intervalos empíricos de 80% e 95% a partir dos resíduos fora da amostra em expansão; comparação SARIMAX com vs. sem `sentimento_llm_lag1`.
 - **Execução:** `.venv\Scripts\python.exe src\modelagem_previsao.py`
 

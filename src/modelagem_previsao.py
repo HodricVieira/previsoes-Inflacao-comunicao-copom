@@ -15,10 +15,11 @@ import numpy as np
 import pandas as pd
 import torch
 from scipy import stats
+from sklearn.compose import ColumnTransformer
 from sklearn.ensemble import RandomForestRegressor
-from sklearn.linear_model import Ridge
+from sklearn.linear_model import RidgeCV
 from sklearn.pipeline import make_pipeline
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from statsmodels.tsa.api import VAR
 from statsmodels.tsa.statespace.sarimax import SARIMAX
 from torch import nn
@@ -34,6 +35,14 @@ EXOG_FEATURES = [
     "ibc_br_sa",
     "desocupacao",
 ]
+TARGET_EXOG_LAGS = [
+    "selic_d1_lag3",
+    "ic_d1_lag11",
+    "ibc_d1_lag4",
+    "desoc_d1_lag4",
+]
+ANCHOR_FOCUS_WEIGHT = 0.75
+ANCHOR_SEASONAL_WEIGHT = 0.25
 HORIZONS = [1, 2, 3]
 TEST_MONTHS = 12
 LSTM_LOOKBACK = 12
@@ -98,9 +107,37 @@ def _load_focus_benchmark() -> pd.DataFrame:
     return focus[["origem_mes", "mes_referencia", "mediana_pct"]]
 
 
+def _focus_lookup(focus: pd.DataFrame) -> dict[tuple[pd.Timestamp, pd.Timestamp], float]:
+    """Indexa mediana do Focus por (mês de origem, mês de referência)."""
+    return focus.set_index(["origem_mes", "mes_referencia"])["mediana_pct"].to_dict()
+
+
+def _attach_historical_focus_h1(
+    df: pd.DataFrame,
+    focus_lookup: dict[tuple[pd.Timestamp, pd.Timestamp], float],
+) -> pd.Series:
+    """Expectativa Focus coletada em tau - 1 mês para o mês tau (sem vazamento)."""
+    values = [
+        focus_lookup.get((tau - pd.DateOffset(months=1), tau), np.nan)
+        for tau in df["data"]
+    ]
+    return pd.Series(values, index=df.index, dtype=float)
+
+
+def _compute_anchor(
+    focus_val: pd.Series | np.ndarray | float,
+    seasonal_val: pd.Series | np.ndarray | float,
+) -> pd.Series | np.ndarray | float:
+    """Combina expectativa Focus (75%) e âncora sazonal y_{t-12} (25%)."""
+    return ANCHOR_FOCUS_WEIGHT * focus_val + ANCHOR_SEASONAL_WEIGHT * seasonal_val
+
+
 def _build_lagged_features(df: pd.DataFrame) -> pd.DataFrame:
     working = df.copy()
     working["ipca_mensal_median"] = working["ipca_mensal_median"].astype(float)
+    # Propaga somente exógenas passadas (sem olhar o futuro) para não descartar 2026-09 por ibc_br_sa nulo
+    for feature in EXOG_FEATURES:
+        working[feature] = working[feature].ffill()
     for lag in [1, 3, 6, 12]:
         working[f"ipca_lag_{lag}"] = working["ipca_mensal_median"].shift(lag)
         for feature in EXOG_FEATURES:
@@ -111,6 +148,13 @@ def _build_lagged_features(df: pd.DataFrame) -> pd.DataFrame:
     for feature in EXOG_FEATURES:
         working[f"{feature}_diff1"] = working[feature].diff(1)
         working[f"{feature}_mm_3m"] = working[feature].rolling(3).mean()
+    # Defasagens >= 3 alinhadas ao mês-alvo guiadas pela Etapa 2 (conclusao_selecao_variaveis.csv)
+    working["y_lag12"] = working["ipca_mensal_median"].shift(12)
+    working["selic_d1_lag3"] = working["selic_efetiva_aa_diff1"].shift(3)
+    working["cambio_d1_lag3"] = working["cambio_usd_brl_diff1"].shift(3)
+    working["ic_d1_lag11"] = working["ic_br_diff1"].shift(11)
+    working["ibc_d1_lag4"] = working["ibc_br_sa_diff1"].shift(4)
+    working["desoc_d1_lag4"] = working["desocupacao_diff1"].shift(4)
     return working
 
 
@@ -190,165 +234,246 @@ def _diebold_mariano(e1: np.ndarray, e2: np.ndarray, h: int = 1, power: int = 2)
 def _fit_lstm_and_predict(
     df: pd.DataFrame,
     split_index: int,
+    focus: pd.DataFrame | None = None,
 ) -> dict[tuple[int, int], float]:
-    """Treina LSTM na base de treino até split_index e prevê h=1,2,3 em walk-forward."""
-    feature_columns = ["ipca_mensal_median", *EXOG_FEATURES]
-    clean = df[["data", *feature_columns]].dropna().reset_index(drop=True)
+    """Treina LSTM regularizada sobre resíduo da âncora até split_index e prevê h=1,2,3."""
+    focus_df = focus if focus is not None else _load_focus_benchmark()
+    focus_lookup = _focus_lookup(focus_df)
+
+    work = df.copy()
+    work["y_prev"] = work["ipca_mensal_median"].shift(1)
+    work["focus_tau"] = _attach_historical_focus_h1(work, focus_lookup)
+    work["anchor"] = _compute_anchor(work["focus_tau"], work["y_lag12"])
+    work["resid"] = work["ipca_mensal_median"] - work["anchor"]
+
+    seq_cols = ["y_prev", "focus_tau", "y_lag12", *TARGET_EXOG_LAGS]
+    clean = work[["data", "ipca_mensal_median", "anchor", "resid", *seq_cols]].dropna().reset_index(drop=True)
     split_date = df.iloc[split_index]["data"]
-    train_mask = clean["data"] < split_date
-    train_values = clean.loc[train_mask, feature_columns].to_numpy(dtype=np.float32)
-    all_values = clean[feature_columns].to_numpy(dtype=np.float32)
-    n_train = len(train_values)
+    n_train = int((clean["data"] < split_date).sum())
+    if n_train <= LSTM_LOOKBACK:
+        return {}
 
-    input_mean = train_values.mean(axis=0)
-    input_scale = train_values.std(axis=0)
+    train_x_raw = clean.iloc[:n_train][seq_cols].to_numpy(dtype=np.float32)
+    input_mean = train_x_raw.mean(axis=0)
+    input_scale = train_x_raw.std(axis=0)
     input_scale[input_scale == 0] = 1.0
-    target_mean = float(input_mean[0])
-    target_scale = float(input_scale[0])
-    scaled = (all_values - input_mean) / input_scale
 
+    resid_tr = clean.iloc[:n_train]["resid"].to_numpy(dtype=np.float32)
+    r_mean = float(resid_tr.mean())
+    r_std = float(resid_tr.std())
+    if r_std == 0.0:
+        r_std = 1.0
+
+    all_x_scaled = (clean[seq_cols].to_numpy(dtype=np.float32) - input_mean) / input_scale
     sequences = np.stack(
-        [scaled[i - LSTM_LOOKBACK : i] for i in range(LSTM_LOOKBACK, n_train)]
+        [all_x_scaled[i - LSTM_LOOKBACK + 1 : i + 1] for i in range(LSTM_LOOKBACK - 1, n_train)]
     )
-    labels = scaled[LSTM_LOOKBACK:n_train, 0]
+    labels = (resid_tr[LSTM_LOOKBACK - 1 : n_train] - r_mean) / r_std
 
     torch.manual_seed(42)
-    model = _LSTMRegressor(input_size=len(feature_columns))
-    optimizer = torch.optim.Adam(model.parameters(), lr=0.01)
+    model = _LSTMRegressor(input_size=len(seq_cols), hidden_size=8)
+    optimizer = torch.optim.Adam(model.parameters(), lr=0.005, weight_decay=0.25)
     loss_fn = nn.MSELoss()
     train_x = torch.as_tensor(sequences, dtype=torch.float32)
     train_y = torch.as_tensor(labels, dtype=torch.float32)
     model.train()
-    for _ in range(120):
+    for _ in range(80):
         optimizer.zero_grad()
         loss = loss_fn(model(train_x), train_y)
         loss.backward()
         optimizer.step()
 
     model.eval()
-    date_to_orig_idx = {d: idx for idx, d in enumerate(df["data"])}
+    date_to_cidx = {d: idx for idx, d in enumerate(clean["data"])}
     preds: dict[tuple[int, int], float] = {}
     with torch.no_grad():
-        for clean_origin_idx in range(n_train - 1, len(clean) - 1):
-            origin_date = clean.iloc[clean_origin_idx]["data"]
-            orig_idx = date_to_orig_idx[origin_date]
-            window = scaled[clean_origin_idx - LSTM_LOOKBACK + 1 : clean_origin_idx + 1].copy()
-            if len(window) < LSTM_LOOKBACK:
+        for origin_idx in range(split_index - 1, len(df) - 1):
+            origin_date = df.iloc[origin_idx]["data"]
+            c_idx = date_to_cidx.get(origin_date)
+            if c_idx is None or c_idx < LSTM_LOOKBACK - 1:
                 continue
+            window = all_x_scaled[c_idx - LSTM_LOOKBACK + 1 : c_idx + 1].copy()
+            prev_y = float(df.iloc[origin_idx]["ipca_mensal_median"])
             for h in HORIZONS:
-                if orig_idx + h >= len(df):
+                t_idx = origin_idx + h
+                if t_idx >= len(df):
                     continue
+                t_date = df.iloc[t_idx]["data"]
+                focus_p = focus_lookup.get((origin_date, t_date), np.nan)
+                y_l12 = float(df.iloc[t_idx]["y_lag12"])
+                next_raw = np.array(
+                    [
+                        prev_y,
+                        float(focus_p),
+                        y_l12,
+                        *[float(df.iloc[t_idx][col]) for col in TARGET_EXOG_LAGS],
+                    ],
+                    dtype=np.float32,
+                )
+                if not np.all(np.isfinite(next_raw)):
+                    continue
+                next_scaled = (next_raw - input_mean) / input_scale
+                window = np.vstack([window[1:], next_scaled])
                 seq = torch.as_tensor(window[None, :, :], dtype=torch.float32)
-                pred_scaled = float(model(seq).item())
-                preds[(orig_idx, h)] = pred_scaled * target_scale + target_mean
-                # Atualiza janela recursivamente mantendo exógenas no último valor conhecido
-                next_row = window[-1].copy()
-                next_row[0] = pred_scaled
-                window = np.vstack([window[1:], next_row])
+                pred_resid = float(model(seq).item()) * r_std + r_mean
+                pred_val = float(_compute_anchor(float(focus_p), y_l12) + pred_resid)
+                preds[(origin_idx, h)] = pred_val
+                prev_y = pred_val
     return preds
 
 
 def _walk_forward_monthly(df: pd.DataFrame, focus: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame, pd.DataFrame]:
     """Executa validação walk-forward (origem móvel) para horizontes h=1,2,3 meses."""
     split_index = len(df) - TEST_MONTHS
-    feature_cols = _feature_columns_at_origin(df)
-    focus_lookup = focus.set_index(["origem_mes", "mes_referencia"])["mediana_pct"].to_dict()
+    focus_lookup = _focus_lookup(focus)
+    df_work = df.copy()
+    df_work["focus_h1_self"] = _attach_historical_focus_h1(df_work, focus_lookup)
 
     # Escala do MASE baseada no naïve sazonal in-sample do treino
-    train_y = df.iloc[:split_index]["ipca_mensal_median"].dropna()
+    train_y = df_work.iloc[:split_index]["ipca_mensal_median"].dropna()
     naive_scale = float(np.mean(np.abs(train_y.diff(12).dropna())))
 
-    lstm_preds = _fit_lstm_and_predict(df, split_index)
+    lstm_preds = _fit_lstm_and_predict(df_work, split_index, focus=focus)
+
+    exog_tau_cols = ["focus_tau", "y_lag12", "perfil_mes", *TARGET_EXOG_LAGS]
+    var_endog_cols = ["ipca_mensal_median", *[f"{f}_diff1" for f in EXOG_FEATURES]]
+    var_exog_cols = ["focus_tau", "y_lag12", "perfil_mes"]
+    direct_cols = ["focus_tau", "y_lag12", "perfil_mes", "ipca_mensal_median", "ipca_mm_3m", *TARGET_EXOG_LAGS]
 
     records: list[dict[str, object]] = []
-    # Origens móveis: de (split_index - 1) até (len(df) - 2)
-    for origin_idx in range(split_index - 1, len(df) - 1):
-        origin_date = df.iloc[origin_idx]["data"]
-        train_slice = df.iloc[: origin_idx + 1].copy()
+    # Origens móveis: de (split_index - 1) até (len(df_work) - 2)
+    for origin_idx in range(split_index - 1, len(df_work) - 1):
+        origin_date = df_work.iloc[origin_idx]["data"]
+        train_slice = df_work.iloc[: origin_idx + 1].copy()
+        month_medians = (
+            train_slice.groupby(train_slice["data"].dt.month)["ipca_mensal_median"]
+            .median()
+            .to_dict()
+        )
+        global_median = float(train_slice["ipca_mensal_median"].median())
+        train_slice["focus_tau"] = train_slice["focus_h1_self"]
+        train_slice["perfil_mes"] = (
+            train_slice["data"].dt.month.map(month_medians).fillna(global_median)
+        )
 
-        # 1) SARIMAX na origem (com exógenas defasadas já disponíveis em origin_idx)
-        sarimax_preds: dict[int, float] = {}
-        sarimax_exog_cols = [f"{f}_lag_1" for f in EXOG_FEATURES]
-        s_frame = train_slice[["ipca_mensal_median", *sarimax_exog_cols]].dropna()
-        if len(s_frame) >= 36:
-            try:
-                with warnings.catch_warnings():
-                    warnings.simplefilter("ignore")
-                    s_model = SARIMAX(
-                        s_frame["ipca_mensal_median"].astype(float),
-                        exog=s_frame[sarimax_exog_cols].astype(float),
-                        order=(1, 0, 1),
-                        seasonal_order=(1, 0, 0, 12),
-                        enforce_stationarity=False,
-                        enforce_invertibility=False,
-                    ).fit(disp=False)
-                # Para h=1..3, usa exógenas conhecidas na origem (últimas observações disponíveis)
-                last_known_exog = np.repeat(
-                    df.iloc[[origin_idx]][EXOG_FEATURES].to_numpy(dtype=float),
-                    repeats=max(HORIZONS),
-                    axis=0,
-                )
-                s_fc = s_model.forecast(steps=max(HORIZONS), exog=last_known_exog)
-                for h in HORIZONS:
-                    sarimax_preds[h] = float(s_fc.iloc[h - 1])
-            except Exception:
-                pass
-
-        # 2) VAR na origem (com primeiras diferenças das macroeconômicas para estacionariedade)
-        var_preds: dict[int, float] = {}
-        var_cols = ["ipca_mensal_median", *[f"{f}_diff1" for f in EXOG_FEATURES]]
-        var_frame = train_slice[var_cols].dropna()
-        if len(var_frame) >= 36:
-            try:
-                v_fit = VAR(var_frame).fit(4)
-                v_fc = v_fit.forecast(
-                    y=var_frame.tail(v_fit.k_ar).to_numpy(dtype=float),
-                    steps=max(HORIZONS),
-                )
-                for h in HORIZONS:
-                    var_preds[h] = float(v_fc[h - 1, 0])
-            except Exception:
-                pass
-
-        # 3) Modelos diretos por horizonte h (Ridge e Random Forest)
+        fut_rows: list[tuple[int, int, pd.Timestamp, pd.Series]] = []
         for h in HORIZONS:
-            target_idx = origin_idx + h
-            if target_idx >= len(df):
-                continue
-            target_date = df.iloc[target_idx]["data"]
-            actual_val = float(df.iloc[target_idx]["ipca_mensal_median"])
+            t_idx = origin_idx + h
+            if t_idx < len(df_work):
+                t_date = df_work.iloc[t_idx]["data"]
+                row_tau = df_work.iloc[t_idx].copy()
+                row_tau["focus_tau"] = focus_lookup.get((origin_date, t_date), np.nan)
+                row_tau["perfil_mes"] = float(month_medians.get(t_date.month, global_median))
+                fut_rows.append((h, t_idx, t_date, row_tau))
 
-            # Baseline naïve sazonal: t + h - 12
+        # 1) SARIMAX na origem com exógenas alinhadas ao mês-alvo (observadas até origin_idx)
+        sarimax_preds: dict[int, float] = {}
+        s_frame = train_slice[["ipca_mensal_median", *exog_tau_cols]].dropna()
+        if len(s_frame) >= 36 and fut_rows:
+            try:
+                fut_exog = pd.DataFrame([r[3][exog_tau_cols] for r in fut_rows]).astype(float)
+                if not fut_exog.isna().any(axis=None):
+                    with warnings.catch_warnings():
+                        warnings.simplefilter("ignore")
+                        s_model = SARIMAX(
+                            s_frame["ipca_mensal_median"].astype(float),
+                            exog=s_frame[exog_tau_cols].astype(float),
+                            order=(1, 0, 0),
+                            enforce_stationarity=False,
+                            enforce_invertibility=False,
+                        ).fit(disp=False)
+                    s_fc = s_model.forecast(steps=len(fut_rows), exog=fut_exog)
+                    for idx_h, (h, _, _, _) in enumerate(fut_rows):
+                        sarimax_preds[h] = float(s_fc.iloc[idx_h])
+            except Exception:
+                pass
+
+        # 2) VAR na origem (primeiras diferenças das macroeconômicas + exógenas sazonais/Focus)
+        var_preds: dict[int, float] = {}
+        var_frame = train_slice[[*var_endog_cols, *var_exog_cols]].dropna()
+        if len(var_frame) >= 36 and fut_rows:
+            try:
+                fut_vexog = pd.DataFrame([r[3][var_exog_cols] for r in fut_rows]).to_numpy(dtype=float)
+                if np.all(np.isfinite(fut_vexog)):
+                    v_fit = VAR(
+                        endog=var_frame[var_endog_cols].astype(float),
+                        exog=var_frame[var_exog_cols].astype(float),
+                    ).fit(1)
+                    v_fc = v_fit.forecast(
+                        y=var_frame[var_endog_cols].tail(v_fit.k_ar).to_numpy(dtype=float),
+                        steps=len(fut_rows),
+                        exog_future=fut_vexog,
+                    )
+                    for idx_h, (h, _, _, _) in enumerate(fut_rows):
+                        var_preds[h] = float(v_fc[idx_h, 0])
+            except Exception:
+                pass
+
+        # 3) Modelos diretos por horizonte h (RidgeCV e Random Forest residual sobre âncora)
+        for h, target_idx, target_date, row_tau in fut_rows:
+            actual_val = float(df_work.iloc[target_idx]["ipca_mensal_median"])
+
             naive_idx = target_idx - 12
-            naive_pred = float(df.iloc[naive_idx]["ipca_mensal_median"]) if naive_idx >= 0 else np.nan
+            naive_pred = float(df_work.iloc[naive_idx]["ipca_mensal_median"]) if naive_idx >= 0 else np.nan
             focus_pred = float(focus_lookup.get((origin_date, target_date), np.nan))
 
-            # Monta base direta y_{t+h} ~ X_t usando apenas dados <= origin_idx
-            direct_df = train_slice[feature_cols].copy()
-            direct_df["target_h"] = train_slice["ipca_mensal_median"].shift(-h)
-            direct_train = direct_df.dropna()
-            x_origin = df.iloc[[origin_idx]][feature_cols]
-
+            # Treino direto apenas com origens i <= origin_idx - h (i + h <= origin_idx, zero vazamento)
+            valid_end = origin_idx - h + 1
             ridge_pred = np.nan
             rf_pred = np.nan
-            if len(direct_train) >= 36 and not x_origin.isna().any(axis=None):
-                x_tr = direct_train[feature_cols].to_numpy(dtype=float)
-                y_tr = direct_train["target_h"].to_numpy(dtype=float)
-                x_te = x_origin.to_numpy(dtype=float)
-
-                ridge = make_pipeline(StandardScaler(), Ridge(alpha=10.0))
-                ridge.fit(x_tr, y_tr)
-                ridge_pred = float(ridge.predict(x_te)[0])
-
-                rf = RandomForestRegressor(
-                    n_estimators=200,
-                    max_depth=6,
-                    min_samples_leaf=3,
-                    random_state=42,
-                    n_jobs=-1,
+            if valid_end >= 36:
+                tr_h = df_work.iloc[:valid_end].copy()
+                tr_h["target_h"] = df_work["ipca_mensal_median"].shift(-h).iloc[:valid_end]
+                tr_h["focus_tau"] = [
+                    focus_lookup.get((df_work.loc[i, "data"], df_work.loc[i + h, "data"]), np.nan)
+                    for i in range(valid_end)
+                ]
+                for col in ["y_lag12", *TARGET_EXOG_LAGS]:
+                    tr_h[col] = df_work[col].shift(-h).iloc[:valid_end]
+                tr_h["perfil_mes"] = (
+                    df_work["data"].shift(-h).iloc[:valid_end].dt.month.map(month_medians).fillna(global_median)
                 )
-                rf.fit(x_tr, y_tr)
-                rf_pred = float(rf.predict(x_te)[0])
+                tr_h["anchor"] = _compute_anchor(tr_h["focus_tau"], tr_h["y_lag12"])
+                tr_h["resid_target"] = tr_h["target_h"] - tr_h["anchor"]
+                direct_train = tr_h[[*direct_cols, "target_h", "resid_target", "anchor"]].dropna()
+
+                x_te_df = pd.DataFrame(
+                    [
+                        {
+                            "focus_tau": focus_pred,
+                            "y_lag12": float(row_tau["y_lag12"]),
+                            "perfil_mes": float(row_tau["perfil_mes"]),
+                            "ipca_mensal_median": float(df_work.iloc[origin_idx]["ipca_mensal_median"]),
+                            "ipca_mm_3m": float(df_work.iloc[origin_idx]["ipca_mm_3m"]),
+                            **{col: float(row_tau[col]) for col in TARGET_EXOG_LAGS},
+                        }
+                    ]
+                )[direct_cols]
+                anchor_te = float(_compute_anchor(focus_pred, float(row_tau["y_lag12"])))
+
+                if (
+                    len(direct_train) >= 36
+                    and not x_te_df.isna().any(axis=None)
+                    and np.isfinite(anchor_te)
+                ):
+                    x_tr = direct_train[direct_cols].to_numpy(dtype=float)
+                    y_tr = direct_train["target_h"].to_numpy(dtype=float)
+                    y_resid_tr = direct_train["resid_target"].to_numpy(dtype=float)
+                    x_te = x_te_df.to_numpy(dtype=float)
+
+                    ridge = make_pipeline(StandardScaler(), RidgeCV(alphas=np.logspace(0, 3, 25)))
+                    ridge.fit(x_tr, y_tr)
+                    ridge_pred = float(ridge.predict(x_te)[0])
+
+                    rf = RandomForestRegressor(
+                        n_estimators=200,
+                        max_depth=3,
+                        min_samples_leaf=8,
+                        random_state=42,
+                        n_jobs=-1,
+                    )
+                    rf.fit(x_tr, y_resid_tr)
+                    rf_pred = float(anchor_te + rf.predict(x_te)[0])
 
             model_outputs = {
                 "baseline_naive_sazonal": naive_pred,
@@ -461,12 +586,12 @@ def _walk_forward_monthly(df: pd.DataFrame, focus: pd.DataFrame) -> tuple[pd.Dat
     return wf_df, eval_all, eval_by_h, dm_df
 
 
-def _panel_forecast_evaluation() -> tuple[pd.DataFrame, pd.DataFrame]:
+def _panel_forecast_evaluation(focus: pd.DataFrame | None = None) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Avalia previsão walk-forward (h=1,2,3) no painel completo (área × grupo)."""
     panel = pd.read_csv(DATA_DIR / "painel_ipca_macro.csv", parse_dates=["data"])
     panel = panel.sort_values(["area_id", "grupo_id", "data"]).reset_index(drop=True)
-    panel["area_cat"] = panel["area_id"].astype("category").cat.codes
-    panel["grupo_cat"] = panel["grupo_id"].astype("category").cat.codes
+    focus_df = focus if focus is not None else _load_focus_benchmark()
+    focus_lookup = _focus_lookup(focus_df)
 
     for lag in [1, 3, 6, 12]:
         panel[f"ipca_lag_{lag}"] = panel.groupby(["area_id", "grupo_id"])[TARGET].shift(lag)
@@ -474,25 +599,31 @@ def _panel_forecast_evaluation() -> tuple[pd.DataFrame, pd.DataFrame]:
         panel.groupby(["area_id", "grupo_id"])[TARGET].transform(lambda s: s.rolling(3).mean())
     )
     for feat in EXOG_FEATURES:
-        panel[f"{feat}_diff1"] = panel.groupby(["area_id", "grupo_id"])[feat].diff(1)
+        panel[f"{feat}_diff1"] = (
+            panel.groupby(["area_id", "grupo_id"])[feat].transform(lambda s: s.ffill().diff(1))
+        )
 
-    panel["naive_sazonal"] = panel.groupby(["area_id", "grupo_id"])[TARGET].shift(12)
-    panel_features = [
-        "area_cat",
-        "grupo_cat",
+    unique_dates = sorted(panel["data"].unique())
+    split_date = unique_dates[-TEST_MONTHS]
+    test_origins = unique_dates[-TEST_MONTHS - 1 : -1]
+
+    # Perfil sazonal local calculado exclusivamente no histórico anterior a split_date (zero vazamento)
+    train_hist = panel.loc[panel["data"] < split_date].copy()
+    train_hist["mes"] = train_hist["data"].dt.month
+    local_saz = train_hist.groupby(["area_id", "grupo_id", "mes"])[TARGET].median().to_dict()
+    grupo_saz = train_hist.groupby(["grupo_id", "mes"])[TARGET].median().to_dict()
+    global_saz = float(train_hist[TARGET].median())
+
+    num_base_features = [
         TARGET,
         "ipca_lag_1",
         "ipca_lag_3",
         "ipca_lag_6",
         "ipca_lag_12",
         "ipca_mm_3m",
-        *EXOG_FEATURES,
         *[f"{f}_diff1" for f in EXOG_FEATURES],
     ]
-
-    unique_dates = sorted(panel["data"].unique())
-    split_date = unique_dates[-TEST_MONTHS]
-    test_origins = unique_dates[-TEST_MONTHS - 1 : -1]
+    cat_features = ["area_id", "grupo_id"]
 
     rows: list[dict[str, object]] = []
     for h in HORIZONS:
@@ -500,20 +631,45 @@ def _panel_forecast_evaluation() -> tuple[pd.DataFrame, pd.DataFrame]:
         panel[f"target_date_h{h}"] = panel.groupby(["area_id", "grupo_id"])["data"].shift(-h)
         panel[f"naive_h{h}"] = panel.groupby(["area_id", "grupo_id"])[TARGET].shift(12 - h)
 
-        # Treina modelo global de painel uma vez antes do bloco de teste (sem vazamento) e avalia nas origens
-        train_df = panel.loc[panel["data"] < split_date, [*panel_features, f"target_h{h}"]].dropna()
-        x_tr = train_df[panel_features].to_numpy(dtype=float)
+        t_months = panel[f"target_date_h{h}"].dt.month
+        panel[f"local_saz_h{h}"] = [
+            local_saz.get((a, g, m), grupo_saz.get((g, m), global_saz))
+            for a, g, m in zip(panel["area_id"], panel["grupo_id"], t_months)
+        ]
+        panel[f"focus_h{h}"] = [
+            focus_lookup.get((d, td), np.nan)
+            for d, td in zip(panel["data"], panel[f"target_date_h{h}"])
+        ]
+
+        h_num_features = [*num_base_features, f"naive_h{h}", f"local_saz_h{h}", f"focus_h{h}"]
+        panel_features = [*cat_features, *h_num_features]
+
+        # Garante que tanto a origem quanto a data-alvo de treino sejam estritamente anteriores a split_date
+        train_df = panel.loc[
+            (panel["data"] < split_date) & (panel[f"target_date_h{h}"] < split_date),
+            [*panel_features, f"target_h{h}"],
+        ].dropna()
+        x_tr = train_df[panel_features]
         y_tr = train_df[f"target_h{h}"].to_numpy(dtype=float)
 
-        ridge = make_pipeline(StandardScaler(), Ridge(alpha=20.0))
+        preprocessor = ColumnTransformer(
+            [
+                ("cat", OneHotEncoder(handle_unknown="ignore", sparse_output=False), cat_features),
+                ("num", StandardScaler(), h_num_features),
+            ]
+        )
+        ridge = make_pipeline(preprocessor, RidgeCV(alphas=np.logspace(0, 3, 15)))
         ridge.fit(x_tr, y_tr)
 
-        rf = RandomForestRegressor(
-            n_estimators=100,
-            max_depth=10,
-            min_samples_leaf=5,
-            random_state=42,
-            n_jobs=-1,
+        rf = make_pipeline(
+            preprocessor,
+            RandomForestRegressor(
+                n_estimators=120,
+                max_depth=8,
+                min_samples_leaf=8,
+                random_state=42,
+                n_jobs=-1,
+            ),
         )
         rf.fit(x_tr, y_tr)
 
@@ -522,7 +678,7 @@ def _panel_forecast_evaluation() -> tuple[pd.DataFrame, pd.DataFrame]:
         ].copy()
         valid_mask = eval_slice[panel_features].notna().all(axis=1)
         eval_valid = eval_slice.loc[valid_mask].copy()
-        x_te = eval_valid[panel_features].to_numpy(dtype=float)
+        x_te = eval_valid[panel_features]
         eval_valid["pred_ridge"] = ridge.predict(x_te)
         eval_valid["pred_rf"] = rf.predict(x_te)
 
@@ -703,6 +859,8 @@ def _evaluate_sentiment_effect(df: pd.DataFrame) -> pd.DataFrame | None:
 
 
 def gerar_modelos() -> pd.DataFrame:
+    np.random.seed(42)
+    torch.manual_seed(42)
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     df = _build_lagged_features(_load_base())
     if len(df) < 48:
@@ -710,7 +868,7 @@ def gerar_modelos() -> pd.DataFrame:
     focus = _load_focus_benchmark()
 
     wf_df, eval_all, eval_by_h, dm_df = _walk_forward_monthly(df, focus)
-    pred_panel, eval_panel = _panel_forecast_evaluation()
+    pred_panel, eval_panel = _panel_forecast_evaluation(focus=focus)
 
     wf_df.to_csv(DATA_DIR / "previsoes_walk_forward.csv", index=False, encoding="utf-8-sig")
     eval_all.to_csv(DATA_DIR / "avaliacao_modelos.csv", index=False, encoding="utf-8-sig")

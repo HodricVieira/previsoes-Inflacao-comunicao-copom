@@ -44,10 +44,10 @@ O painel integrado (`dados/tratados/painel_ipca_macro.csv`) contém **25.488 obs
 - **Justificativa do horizonte de 3 meses:** corresponde a aproximadamente dois ciclos de reunião do Copom (reuniões a cada ~45 dias), constituindo o horizonte tático padrão de acompanhamento da inflação de curto prazo.
 - **Famílias de modelos comparadas (série nacional mediana):**
   1. *Referência (baseline):* Naïve Sazonal ($y_{t+h-12}$) e **Mediana do Focus** (coletada no mês de origem $t$ para $t+h$).
-  2. *Estatísticos/Lineares:* **VAR(4)** (com primeiras diferenças das variáveis macroeconômicas para estacionariedade), **SARIMAX(1,0,1)(1,0,0,12)** com exógenas defasadas e **Regressão Ridge** com defasagens (1, 3, 6, 12) e janelas móveis (média 3m, 6m e desvio 3m).
-  3. *Aprendizado de Máquina:* **Random Forest** (`200` árvores, `max_depth=6`) com as mesmas defasagens e janelas móveis.
-  4. *Redes Neurais:* **LSTM** em PyTorch (janela `lookback=12`, camada oculta de 16 unidades, previsão recursiva).
-- **Previsão desagregada no painel (16 áreas × 9 grupos):** modelos globais de painel (`ridge_painel` e `random_forest_painel`) com codificação de área e grupo, defasagens locais e exógenas macroeconômicas, comparados ao `baseline_naive_sazonal_painel`.
+  2. *Estatísticos/Lineares:* **VAR(1)** (com primeiras diferenças das variáveis macroeconômicas para estacionariedade e exógenas sazonais/Focus), **SARIMAX(1,0,0)** com exógenas alinhadas ao mês-alvo (`focus_tau`, `y_lag12`, perfil sazonal mensal histórico calculado no treino e defasagens macroeconômicas da Etapa 2) e **Regressão Ridge** (`RidgeCV`) direta por horizonte.
+  3. *Aprendizado de Máquina:* **Random Forest** (`200` árvores, `max_depth=3`, `min_samples_leaf=8`) ajustado sobre o desvio residual em relação à âncora Focus-sazonal (`0,75 · focus_tau + 0,25 · y_lag12`).
+  4. *Redes Neurais:* **LSTM** em PyTorch (janela `lookback=12`, camada oculta de `8` unidades, regularização L2 `weight_decay=0,25`, `80` épocas) prevendo o resíduo padronizado sobre a âncora Focus-sazonal.
+- **Previsão desagregada no painel (16 áreas × 9 grupos):** modelos globais de painel (`ridge_painel` com `RidgeCV` e `random_forest_painel`) com efeitos fixos via `OneHotEncoder` (área e grupo), perfil sazonal local calculado exclusivamente no treino, expectativa Focus e defasagens locais/macroeconômicas, comparados ao `baseline_naive_sazonal_painel`.
 - **Avaliação estatística e incerteza:** métricas **MAE, RMSE, MAPE, sMAPE e MASE** (com escala naïve sazonal in-sample), teste bilateral de **Diebold-Mariano** (variância HAC de Bartlett para horizonte $h$) e **intervalos de previsão empíricos de 80% e 95%**.
 
 ### 3.4 Pipeline de Análise de Sentimento (Copom)
@@ -75,38 +75,38 @@ Observa-se que `ic_br` e `cambio_usd_brl` apresentam colinearidade de tendência
 
 | Modelo | N | MAE | RMSE | MAPE (%) | sMAPE (%) | MASE |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `focus_mediana` (referência) | 33 | **0,1351** | **0,1526** | 123,45 | 58,45 | **0,7168** |
-| `baseline_naive_sazonal` | 33 | 0,1391 | 0,1837 | 84,08 | **53,62** | 0,7382 |
-| `var_multivariado` | 33 | 0,1734 | 0,1914 | 128,20 | 73,34 | 0,9202 |
-| `sarimax_exogeno` | 33 | 0,1731 | 0,1918 | 136,06 | 72,46 | 0,9188 |
-| `regressao_ridge` | 33 | 0,1737 | 0,2042 | 105,71 | 73,21 | 0,9220 |
-| `random_forest` | 33 | 0,1798 | 0,2062 | 139,57 | 70,80 | 0,9544 |
-| `lstm_multivariado` | 32 | 0,1965 | 0,2751 | 85,72 | 93,39 | 1,0427 |
+| `sarimax_exogeno` | 33 | 0,1152 | **0,1413** | **72,33** | 49,77 | 0,6112 |
+| `var_multivariado` | 33 | **0,1143** | 0,1466 | 80,48 | **46,84** | **0,6065** |
+| `regressao_ridge` | 33 | 0,1267 | 0,1509 | 85,26 | 53,25 | 0,6723 |
+| `lstm_multivariado` | 33 | 0,1255 | 0,1525 | 90,48 | 57,57 | 0,6659 |
+| `focus_mediana` (referência) | 33 | 0,1351 | 0,1526 | 123,45 | 58,45 | 0,7168 |
+| `random_forest` | 33 | 0,1305 | 0,1604 | 99,00 | 58,70 | 0,6923 |
+| `baseline_naive_sazonal` | 33 | 0,1391 | 0,1837 | 84,08 | 53,62 | 0,7382 |
 
 *Nota sobre MAPE:* como variações mensais do IPCA assumem valores próximos de zero (e ocasionais deflações), o MAPE sofre explosão numérica; por isso, **MASE** e **sMAPE** são as métricas recomendadas para comparação relativa.
 
-Por horizonte (`avaliacao_modelos_por_horizonte.csv`), o destaque dos modelos próprios ocorre em **$h = 1$ mês**: `var_multivariado` (MAE = 0,1478; RMSE = 0,1711; MASE = 0,7846) e `sarimax_exogeno` (MAE = 0,1526; RMSE = 0,1719) superam o `baseline_naive_sazonal` (RMSE = 0,2007) e aproximam-se da `focus_mediana` (RMSE = 0,1625). Em $h = 2$ e $h = 3$, a `focus_mediana` (RMSE = 0,1517 e 0,1408) mantém vantagem consistente por incorporar expectativas correntes de alta frequência dos agentes de mercado.
+Todos os cinco modelos próprios superam o `baseline_naive_sazonal` em MAE, RMSE e MASE no consolidado ($N = 33$), e quatro deles (`sarimax_exogeno`, `var_multivariado`, `regressao_ridge` e `lstm_multivariado`) também superam a `focus_mediana`. Por horizonte (`avaliacao_modelos_por_horizonte.csv`): em **$h = 1$ mês**, os cinco modelos próprios superam o `baseline_naive_sazonal` (RMSE = 0,2007) e a `focus_mediana` (RMSE = 0,1625), liderados por `sarimax_exogeno` (MAE = 0,1073; RMSE = 0,1359; MASE = 0,5693) e `var_multivariado` (MAE = 0,1102; RMSE = 0,1420); em **$h = 2$ meses**, `sarimax_exogeno` (RMSE = 0,1438) e `lstm_multivariado` (RMSE = 0,1504) mantêm vantagem sobre `focus_mediana` (RMSE = 0,1517) e `baseline_naive_sazonal` (RMSE = 0,1693); e em **$h = 3$ meses**, `focus_mediana` (RMSE = 0,1408) lidera seguida de perto por `var_multivariado` (RMSE = 0,1429) e `sarimax_exogeno` (RMSE = 0,1447), com todos os cinco modelos superando o `baseline_naive_sazonal` (RMSE = 0,1774).
 
 Os intervalos de previsão de 80% e 95% para $h = 1$ mês estão ilustrados em `figuras/previsoes_intervalos_modelos.png`.
 
 ### 4.3 Teste de Diebold-Mariano
-A comparação estatística (`teste_diebold_mariano.csv`) entre os dois melhores modelos próprios (`var_multivariado` vs. `sarimax_exogeno`) não indicou diferença estatisticamente significativa nos três horizontes ($p = 0,9662$ em $h=1$; $p = 0,9165$ em $h=2$; $p = 0,8961$ em $h=3$ para MSE). Da mesma forma, na janela de 10 a 12 pares de teste, a diferença entre `var_multivariado` e `focus_mediana` não atingiu significância a 5% ($p = 0,8096$ em $h=1$; $p = 0,1118$ em $h=3$).
+A comparação estatística (`teste_diebold_mariano.csv`) entre os dois melhores modelos próprios (`sarimax_exogeno` vs. `var_multivariado`) não indicou diferença estatisticamente significativa nos três horizontes ($p = 0,5476$ em $h=1$; $p = 0,2518$ em $h=2$; $p = 0,8890$ em $h=3$ para MSE). Da mesma forma, na janela de 10 a 12 pares de teste, as diferenças de `sarimax_exogeno` contra `focus_mediana` ($p = 0,2967$ em $h=1$; $p = 0,7682$ em $h=2$; $p = 0,8623$ em $h=3$) e contra `baseline_naive_sazonal` ($p = 0,1593$ em $h=1$; $p = 0,5030$ em $h=2$; $p = 0,2791$ em $h=3$) não atingiram significância a 5%.
 
 ### 4.4 Desempenho no Painel Completo (16 Áreas × 9 Grupos)
 
 | Modelo | Horizonte | N previsões | MAE | RMSE | sMAPE (%) | MASE |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `ridge_painel` | 1 mês | 1.728 | **0,5956** | **0,9070** | 119,27 | **0,7157** |
-| `random_forest_painel` | 1 mês | 1.728 | 0,6071 | 0,9095 | 124,94 | 0,7296 |
-| `baseline_naive_sazonal_painel` | 1 mês | 1.728 | 0,6713 | 1,0602 | **117,08** | 0,8067 |
-| `ridge_painel` | 2 meses | 1.584 | **0,6037** | **0,9316** | 122,77 | **0,7005** |
-| `random_forest_painel` | 2 meses | 1.584 | 0,6080 | 0,9397 | 131,51 | 0,7055 |
-| `baseline_naive_sazonal_painel` | 2 meses | 1.584 | 0,6700 | 1,0683 | **115,72** | 0,7774 |
-| `ridge_painel` | 3 meses | 1.440 | **0,6001** | **0,9445** | 119,89 | **0,7053** |
-| `random_forest_painel` | 3 meses | 1.440 | 0,6377 | 0,9725 | 117,69 | 0,7496 |
-| `baseline_naive_sazonal_painel` | 3 meses | 1.440 | 0,6515 | 1,0462 | **114,27** | 0,7657 |
+| `random_forest_painel` | 1 mês | 1.728 | **0,5047** | **0,7166** | **112,81** | **0,6066** |
+| `ridge_painel` | 1 mês | 1.728 | 0,5239 | 0,7423 | 115,81 | 0,6296 |
+| `baseline_naive_sazonal_painel` | 1 mês | 1.728 | 0,6713 | 1,0602 | 117,08 | 0,8067 |
+| `random_forest_painel` | 2 meses | 1.584 | **0,5174** | **0,7396** | 115,38 | **0,6004** |
+| `ridge_painel` | 2 meses | 1.584 | 0,5241 | 0,7491 | **113,86** | 0,6082 |
+| `baseline_naive_sazonal_painel` | 2 meses | 1.584 | 0,6700 | 1,0683 | 115,72 | 0,7774 |
+| `random_forest_painel` | 3 meses | 1.440 | **0,5187** | **0,7449** | 113,07 | **0,6097** |
+| `ridge_painel` | 3 meses | 1.440 | 0,5189 | 0,7513 | **110,38** | 0,6099 |
+| `baseline_naive_sazonal_painel` | 3 meses | 1.440 | 0,6515 | 1,0462 | 114,27 | 0,7657 |
 
-No nível desagregado (`área × grupo`), ambos os modelos multivariados de painel (`ridge_painel` e `random_forest_painel`) superam o baseline naïve sazonal em MAE, RMSE e MASE nos três horizontes avaliados.
+No nível desagregado (`área × grupo`), ambos os modelos multivariados de painel (`random_forest_painel` e `ridge_painel`) superam amplamente o baseline naïve sazonal em MAE, RMSE, sMAPE e MASE nos três horizontes avaliados.
 
 ### 4.5 Análise de Sentimento do Copom e Impacto na Previsão (Etapa 6)
 A classificação via LLM dos 200 documentos distintos apresentou distribuição de `76` trechos neutros, `76` contracionistas e `48` expansionistas, com **kappa de Cohen de 0,3803** em relação ao léxico de referência (concordância moderada, refletindo a limitação do léxico simples frente ao contexto monetário).

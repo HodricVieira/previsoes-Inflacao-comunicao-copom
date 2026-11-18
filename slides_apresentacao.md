@@ -58,25 +58,26 @@ paginate: true
 
 ## 5. Modelagem e Validação Walk-Forward ($h = 1, 2, 3$)
 
-- **4 famílias + Focus:** Naïve Sazonal, Focus Mediana, Estatísticos (VAR, SARIMAX, Ridge), Aprendizado de Máquina (Random Forest com janelas móveis) e Rede Neural (LSTM PyTorch).
-- **Validação:** origem móvel nos últimos 12 meses (`2025-10` a `2026-09`), sem embaralhamento.
+- **4 famílias + Focus:** Naïve Sazonal, Focus Mediana, Estatísticos (VAR(1), SARIMAX(1,0,0), RidgeCV), Aprendizado de Máquina (Random Forest residual sobre âncora) e Rede Neural (LSTM PyTorch).
+- **Validação:** origem móvel nos últimos 12 meses (`2025-10` a `2026-09`), sem embaralhamento, com preditores sazonais/Focus alinhados ao mês-alvo e defasagens da Etapa 2.
 
 | Modelo | MAE | RMSE | sMAPE (%) | MASE |
 | :--- | :---: | :---: | :---: | :---: |
-| `focus_mediana` | **0,1351** | **0,1526** | 58,45 | **0,7168** |
-| `baseline_naive_sazonal` | 0,1391 | 0,1837 | **53,62** | 0,7382 |
-| `var_multivariado` | 0,1734 | 0,1914 | 73,34 | 0,9202 |
-| `sarimax_exogeno` | 0,1731 | 0,1918 | 72,46 | 0,9188 |
-| `regressao_ridge` | 0,1737 | 0,2042 | 73,21 | 0,9220 |
-| `random_forest` | 0,1798 | 0,2062 | 70,80 | 0,9544 |
-| `lstm_multivariado` | 0,1965 | 0,2751 | 93,39 | 1,0427 |
+| `sarimax_exogeno` | 0,1152 | **0,1413** | 49,77 | 0,6112 |
+| `var_multivariado` | **0,1143** | 0,1466 | **46,84** | **0,6065** |
+| `regressao_ridge` | 0,1267 | 0,1509 | 53,25 | 0,6723 |
+| `lstm_multivariado` | 0,1255 | 0,1525 | 57,57 | 0,6659 |
+| `focus_mediana` | 0,1351 | 0,1526 | 58,45 | 0,7168 |
+| `random_forest` | 0,1305 | 0,1604 | 58,70 | 0,6923 |
+| `baseline_naive_sazonal` | 0,1391 | 0,1837 | 53,62 | 0,7382 |
 
 ---
 
 ## 6. Intervalos de Previsão e Diebold-Mariano
 
-- **Diebold-Mariano:** sem diferença significativa entre `var_multivariado` e `sarimax_exogeno` ($p > 0,89$ em $h=1,2,3$).
-- **Destaque em $h = 1$ mês:** `var_multivariado` (RMSE = `0,1711`) supera o naïve sazonal (`0,2007`) e aproxima-se do Focus (`0,1625`).
+- **Todos os 5 modelos próprios superam o baseline** (`baseline_naive_sazonal`) em MAE, RMSE e MASE no consolidado; 4 superam a `focus_mediana`.
+- **Diebold-Mariano:** sem diferença significativa a 5% entre `sarimax_exogeno` e `var_multivariado` ($p > 0,25$ em $h=1,2,3$).
+- **Destaque em $h = 1$ mês:** `sarimax_exogeno` (RMSE = `0,1359`) e `var_multivariado` (RMSE = `0,1420`) superam o Focus (`0,1625`) e o naïve sazonal (`0,2007`).
 
 ![w:720](figuras/previsoes_intervalos_modelos.png)
 
@@ -84,15 +85,15 @@ paginate: true
 
 ## 7. Previsão no Painel Completo (`16 áreas × 9 grupos`)
 
-Modelos globais de painel superam o baseline naïve sazonal nos três horizontes:
+Modelos globais com efeitos fixos (`OneHotEncoder`) e perfil sazonal local superam o baseline nos três horizontes:
 
 | Modelo | Horizonte | N | MAE | RMSE | MASE |
 | :--- | :---: | :---: | :---: | :---: | :---: |
-| `ridge_painel` | 1 mês | 1.728 | **0,5956** | **0,9070** | **0,7157** |
-| `random_forest_painel` | 1 mês | 1.728 | 0,6071 | 0,9095 | 0,7296 |
+| `random_forest_painel` | 1 mês | 1.728 | **0,5047** | **0,7166** | **0,6066** |
+| `ridge_painel` | 1 mês | 1.728 | 0,5239 | 0,7423 | 0,6296 |
 | `baseline_naive_sazonal_painel` | 1 mês | 1.728 | 0,6713 | 1,0602 | 0,8067 |
-| `ridge_painel` | 2 meses | 1.584 | **0,6037** | **0,9316** | **0,7005** |
-| `ridge_painel` | 3 meses | 1.440 | **0,6001** | **0,9445** | **0,7053** |
+| `random_forest_painel` | 2 meses | 1.584 | **0,5174** | **0,7396** | **0,6004** |
+| `random_forest_painel` | 3 meses | 1.440 | **0,5187** | **0,7449** | **0,6097** |
 
 ---
 
