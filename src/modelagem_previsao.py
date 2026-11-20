@@ -770,15 +770,36 @@ def _plot_forecasts_with_intervals(wf_df: pd.DataFrame, eval_all: pd.DataFrame) 
 
 
 def _sarimax_walk_forward(
-    df: pd.DataFrame, split_index: int, features: list[str]
+    df: pd.DataFrame,
+    split_index: int,
+    features: list[str],
+    focus_lookup: dict[tuple[pd.Timestamp, pd.Timestamp], float],
 ) -> pd.Series:
-    """Issue a one-month forecast at each origin, using only then-known history."""
+    """Emite previsões h=1 mês em origem móvel usando o melhor SARIMAX alinhado ao mês-alvo."""
     forecast_values: list[float] = []
-    for current_index in range(split_index, len(df)):
-        training = df.iloc[:current_index][
-            ["ipca_mensal_median", *features]
-        ].dropna()
-        current = df.iloc[[current_index]][features]
+    for target_index in range(split_index, len(df)):
+        origin_index = target_index - 1
+        origin_date = df.iloc[origin_index]["data"]
+        target_date = df.iloc[target_index]["data"]
+
+        train_slice = df.iloc[: origin_index + 1].copy()
+        month_medians = (
+            train_slice.groupby(train_slice["data"].dt.month)["ipca_mensal_median"]
+            .median()
+            .to_dict()
+        )
+        global_median = float(train_slice["ipca_mensal_median"].median())
+        train_slice["focus_tau"] = train_slice["focus_h1_self"]
+        train_slice["perfil_mes"] = (
+            train_slice["data"].dt.month.map(month_medians).fillna(global_median)
+        )
+        training = train_slice[["ipca_mensal_median", *features]].dropna()
+
+        row_te = df.iloc[target_index].copy()
+        row_te["focus_tau"] = focus_lookup.get((origin_date, target_date), np.nan)
+        row_te["perfil_mes"] = float(month_medians.get(target_date.month, global_median))
+        current = pd.DataFrame([row_te[features]], columns=features).astype(float)
+
         if len(training) < 36 or current.isna().any(axis=None):
             forecast_values.append(float("nan"))
             continue
@@ -787,48 +808,54 @@ def _sarimax_walk_forward(
             model = SARIMAX(
                 training["ipca_mensal_median"].astype(float),
                 exog=training[features].astype(float),
-                order=(1, 0, 1),
-                seasonal_order=(1, 0, 0, 12),
+                order=(1, 0, 0),
                 enforce_stationarity=False,
                 enforce_invertibility=False,
             )
             fitted = model.fit(disp=False)
-        forecast = fitted.forecast(steps=1, exog=current.astype(float))
+        forecast = fitted.forecast(steps=1, exog=current)
         forecast_values.append(float(forecast.iloc[0]))
     return pd.Series(forecast_values, index=df.index[split_index:], dtype=float)
 
 
-def _evaluate_sentiment_effect(df: pd.DataFrame) -> pd.DataFrame | None:
-    sentiment_features = [
-        "sentimento_llm_lag1",
-        "n_documentos_llm_lag1",
-    ]
+def _evaluate_sentiment_effect(
+    df: pd.DataFrame, focus: pd.DataFrame | None = None
+) -> pd.DataFrame | None:
+    sentiment_features = ["sentimento_llm_lag1"]
     if any(feature not in df for feature in sentiment_features):
         return None
 
-    split_index = len(df) - TEST_MONTHS
-    regular_features = [
-        column
-        for column in df.columns
-        if column.startswith("ipca_lag_")
-        or any(column.startswith(f"{feature}_lag_") for feature in EXOG_FEATURES)
-    ]
-    complete_training = df.iloc[:split_index][
+    focus_df = focus if focus is not None else _load_focus_benchmark()
+    focus_lookup = _focus_lookup(focus_df)
+    work = df.copy()
+    work["focus_h1_self"] = _attach_historical_focus_h1(work, focus_lookup)
+
+    split_index = len(work) - TEST_MONTHS
+    train_y = work.iloc[:split_index]["ipca_mensal_median"].dropna()
+    naive_scale = float(np.mean(np.abs(train_y.diff(12).dropna())))
+
+    regular_features = ["focus_tau", "y_lag12", "perfil_mes", *TARGET_EXOG_LAGS]
+    train_pre = work.iloc[:split_index].copy()
+    train_pre["focus_tau"] = train_pre["focus_h1_self"]
+    train_pre["perfil_mes"] = train_pre["ipca_mensal_median"]
+    complete_training = train_pre[
         ["ipca_mensal_median", *regular_features, *sentiment_features]
     ].dropna()
     if len(complete_training) < 36:
         return None
+
     predictions = {
         "sarimax_sem_sentimento": _sarimax_walk_forward(
-            df, split_index, regular_features
+            work, split_index, regular_features, focus_lookup
         ),
         "sarimax_com_sentimento": _sarimax_walk_forward(
-            df, split_index, [*regular_features, *sentiment_features]
+            work, split_index, [*regular_features, *sentiment_features], focus_lookup
         ),
     }
     forecast_frame = pd.DataFrame(
         {
-            "observado": df.iloc[split_index:]["ipca_mensal_median"].to_numpy(
+            "data": work.iloc[split_index:]["data"].to_numpy(),
+            "observado": work.iloc[split_index:]["ipca_mensal_median"].to_numpy(
                 dtype=float
             ),
             **{
@@ -846,13 +873,13 @@ def _evaluate_sentiment_effect(df: pd.DataFrame) -> pd.DataFrame | None:
                 "modelo": model_name,
                 "protocolo": "walk-forward, horizonte de 1 mês",
                 "n_previsoes": len(forecast_frame),
-                "periodo_teste_inicio": df.iloc[
-                    split_index + forecast_frame.index.min()
-                ]["data"].date(),
-                "periodo_teste_fim": df.iloc[
-                    split_index + forecast_frame.index.max()
-                ]["data"].date(),
-                **_metrics(forecast_frame["observado"], forecast_frame[model_name]),
+                "periodo_teste_inicio": pd.Timestamp(forecast_frame["data"].min()).date(),
+                "periodo_teste_fim": pd.Timestamp(forecast_frame["data"].max()).date(),
+                **_metrics(
+                    forecast_frame["observado"],
+                    forecast_frame[model_name],
+                    naive_scale=naive_scale,
+                ),
             }
         )
     return pd.DataFrame(rows)
@@ -878,7 +905,7 @@ def gerar_modelos() -> pd.DataFrame:
     eval_panel.to_csv(DATA_DIR / "avaliacao_painel_area_grupo.csv", index=False, encoding="utf-8-sig")
     _plot_forecasts_with_intervals(wf_df, eval_all)
 
-    sentiment_comparison = _evaluate_sentiment_effect(df)
+    sentiment_comparison = _evaluate_sentiment_effect(df, focus=focus)
     sentiment_output = DATA_DIR / "impacto_sentimento_sarimax.csv"
     if sentiment_comparison is not None:
         sentiment_comparison.to_csv(sentiment_output, index=False, encoding="utf-8-sig")

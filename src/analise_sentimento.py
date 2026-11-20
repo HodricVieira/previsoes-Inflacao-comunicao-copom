@@ -840,6 +840,22 @@ def _cohen_kappa(first: pd.Series, second: pd.Series) -> float:
     return (observed - expected) / (1.0 - expected) if expected < 1 else float("nan")
 
 
+def _normalize_manual_label(series: pd.Series) -> pd.Series:
+    """Normaliza rótulos manuais textuais ou numéricos (-1, 0, +1) para as 3 classes válidas."""
+    numeric_map = {
+        "-1": "expansionista",
+        "-1.0": "expansionista",
+        "0": "neutro",
+        "0.0": "neutro",
+        "1": "contracionista",
+        "+1": "contracionista",
+        "1.0": "contracionista",
+        "+1.0": "contracionista",
+    }
+    cleaned = series.astype("string").fillna("").str.strip().str.lower()
+    return cleaned.replace(numeric_map)
+
+
 def validar_rotulacao() -> pd.DataFrame:
     """Calcula kappa contra o LLM e o léxico sem fabricar rótulos humanos."""
     manual_path = DATA_DIR / "rotulacao_manual.csv"
@@ -847,9 +863,7 @@ def validar_rotulacao() -> pd.DataFrame:
     if not manual_path.exists() or not chunks_path.exists():
         raise FileNotFoundError("Execute preparar e preencha rotulacao_manual.csv.")
     manual = pd.read_csv(manual_path, encoding="utf-8-sig")
-    manual["rotulo_manual"] = (
-        manual["rotulo_manual"].astype("string").fillna("").str.strip().str.lower()
-    )
+    manual["rotulo_manual"] = _normalize_manual_label(manual["rotulo_manual"])
     labeled = manual.loc[manual["rotulo_manual"].isin(VALID_LABELS)].copy()
     if len(labeled) < MIN_MANUAL_LABELS:
         raise ValueError(
@@ -888,14 +902,21 @@ def validar_rotulacao() -> pd.DataFrame:
                 ),
             }
         )
+    valid_llm_lex = labeled.loc[
+        labeled["rotulo_llm"].isin(VALID_LABELS)
+        & labeled["rotulo_lexico"].isin(VALID_LABELS)
+    ]
+    rows.append(
+        {
+            "comparacao": "llm_vs_lexico_referencia",
+            "n_textos": len(valid_llm_lex),
+            "kappa_cohen": _cohen_kappa(
+                valid_llm_lex["rotulo_llm"], valid_llm_lex["rotulo_lexico"]
+            ),
+        }
+    )
     if "rotulo_manual_2" in labeled:
-        second = (
-            labeled["rotulo_manual_2"]
-            .astype("string")
-            .fillna("")
-            .str.strip()
-            .str.lower()
-        )
+        second = _normalize_manual_label(labeled["rotulo_manual_2"])
         valid = labeled.loc[second.isin(VALID_LABELS)].copy()
         valid["rotulo_manual_2"] = second.loc[valid.index]
         rows.append(

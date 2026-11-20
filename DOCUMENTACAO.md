@@ -90,7 +90,7 @@ Lê automaticamente as variáveis de ambiente ou o arquivo `.env` (`_load_dotenv
 | `classificar` | `--somente-amostra` | `classificar_trechos` | Chama API OpenAI-compatible (`/chat/completions`) com retentativa automática (`429/500/502/503/504` e `Timeout/ConnectionError`) e checkpoint a cada 10 trechos. |
 | `importar-json` | `--arquivo`, `--modelo` | `importar_rotulos_json` | Valida e importa rótulos pré-classificados de um JSON (padrão `dados/tratados/rotulo_llm.json`) para `trechos_sentimento.csv`. |
 | `agregar` | `--permitir-parcial` | `agregar_sentimento` | Agrega escores por documento e mês; `--permitir-parcial` mantém documentos com ao menos 1 trecho classificado. |
-| `validar` | — | `validar_rotulacao` | Calcula kappa de Cohen entre rótulos humanos (`rotulacao_manual.csv`, mínimo 200), LLM e léxico de referência. |
+| `validar` | — | `validar_rotulacao` | Calcula kappa de Cohen entre rótulos humanos (`rotulacao_manual.csv`, aceitando rótulos textuais ou `-1/0/+1`, mínimo 200), LLM e léxico de referência, gravando `validacao_sentimento.csv`. |
 
 ### 3.5 `src/modelagem_previsao.py` (`gerar_modelos`)
 - **Validação Walk-Forward (origem móvel):** janela de teste nos últimos `12` meses (`2025-10-01` a `2026-09-01`), horizontes $h \in \{1, 2, 3\}$ meses.
@@ -137,7 +137,8 @@ Lê automaticamente as variáveis de ambiente ou o arquivo `.env` (`_load_dotenv
 | `documentos_copom.csv` | `238` atas e comunicados oficiais do Copom desde `2012-01-18`. |
 | `trechos_sentimento.csv` | `1.094` trechos segmentados com escores léxicos e colunas de classificação LLM. |
 | `rotulo_llm.json` | Rótulos LLM gerados para os `200` trechos representativos de documentos distintos. |
-| `rotulacao_manual.csv` | Amostra cega (`200` documentos distintos) para anotação humana e cálculo de kappa. |
+| `rotulacao_manual.csv` | Amostra cega (`200` documentos distintos) rotulada manualmente para validação humana e cálculo de kappa. |
+| `validacao_sentimento.csv` | Resultados do kappa de Cohen (`manual_vs_llm`, `manual_vs_lexico_referencia`, `llm_vs_lexico_referencia` e inter-anotadores). |
 | `sentimento_documentos.csv` | Escores LLM e léxicos agregados por documento (`238` linhas). |
 | `sentimento_mensal.csv` | Escores mensais (`escore_llm`, `escore_lexico`, contagem de documentos). |
 | `sentimento_mensal_por_fonte.csv` | Escores mensais desagregados por tipo de fonte (ata vs. comunicado). |

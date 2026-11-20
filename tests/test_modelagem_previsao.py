@@ -40,6 +40,25 @@ class TestModelagemPrevisao(unittest.TestCase):
                 self.assertLess(row["mae"], naive["mae"])
                 self.assertLess(row["mase"], naive["mase"])
 
+    def test_validacao_sentimento_200_rotulos_manuais_e_impacto_sarimax(self) -> None:
+        valid_path = DATA_DIR / "validacao_sentimento.csv"
+        self.assertTrue(valid_path.exists(), "validacao_sentimento.csv deve existir")
+        valid_df = pd.read_csv(valid_path).set_index("comparacao")
+
+        self.assertEqual(int(valid_df.loc["manual_vs_llm", "n_textos"]), 200)
+        self.assertEqual(int(valid_df.loc["manual_vs_lexico_referencia", "n_textos"]), 200)
+        kappa_llm = float(valid_df.loc["manual_vs_llm", "kappa_cohen"])
+        kappa_lex = float(valid_df.loc["manual_vs_lexico_referencia", "kappa_cohen"])
+        self.assertGreater(kappa_llm, 0.70)
+        self.assertGreater(kappa_lex, 0.25)
+        self.assertGreater(kappa_llm, kappa_lex)
+
+        impact_df = pd.read_csv(DATA_DIR / "impacto_sentimento_sarimax.csv").set_index("modelo")
+        for model_name in ["sarimax_sem_sentimento", "sarimax_com_sentimento"]:
+            self.assertEqual(int(impact_df.loc[model_name, "n_previsoes"]), 12)
+            self.assertLess(float(impact_df.loc[model_name, "rmse"]), 0.16)
+            self.assertLess(float(impact_df.loc[model_name, "mae"]), 0.13)
+
 
 if __name__ == "__main__":
     unittest.main()

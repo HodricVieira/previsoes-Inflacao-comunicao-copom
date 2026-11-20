@@ -1,0 +1,5 @@
+﻿comparacao,n_textos,kappa_cohen
+manual_vs_llm,200,0.7356554190639091
+manual_vs_lexico_referencia,200,0.3078072060912966
+llm_vs_lexico_referencia,200,0.3803195460654023
+anotador_1_vs_anotador_2,0,

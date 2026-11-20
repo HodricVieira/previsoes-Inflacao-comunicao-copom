@@ -109,23 +109,33 @@ A comparação estatística (`teste_diebold_mariano.csv`) entre os dois melhores
 No nível desagregado (`área × grupo`), ambos os modelos multivariados de painel (`random_forest_painel` e `ridge_painel`) superam amplamente o baseline naïve sazonal em MAE, RMSE, sMAPE e MASE nos três horizontes avaliados.
 
 ### 4.5 Análise de Sentimento do Copom e Impacto na Previsão (Etapa 6)
-A classificação via LLM dos 200 documentos distintos apresentou distribuição de `76` trechos neutros, `76` contracionistas e `48` expansionistas, com **kappa de Cohen de 0,3803** em relação ao léxico de referência (concordância moderada, refletindo a limitação do léxico simples frente ao contexto monetário).
+A classificação via LLM dos 200 documentos distintos apresentou distribuição de `76` trechos neutros, `76` contracionistas e `48` expansionistas, enquanto a rotulagem humana cega dos mesmos **200 documentos distintos** (`dados/tratados/rotulacao_manual.csv`) registrou `108` trechos neutros (`0`), `59` contracionistas (`1`) e `33` expansionistas (`-1`).
 
-Na avaliação walk-forward de 1 mês à frente (`impacto_sentimento_sarimax.csv`, 12 meses de `2025-10-01` a `2026-09-01`):
+Na validação cruzada pelo **kappa de Cohen** (`dados/tratados/validacao_sentimento.csv`, $N = 200$):
 
-| Modelo | N | MAE | RMSE | sMAPE (%) | MASE |
-| :--- | :---: | :---: | :---: | :---: | :---: |
-| `sarimax_sem_sentimento` | 12 | **0,1329** | **0,1668** | **63,08** | **0,8674** |
-| `sarimax_com_sentimento` | 12 | 0,1430 | 0,1771 | 70,17 | 0,9335 |
+| Comparação | N textos | Kappa de Cohen | Interpretação |
+| :--- | :---: | :---: | :--- |
+| `manual_vs_llm` | 200 | **0,7357** | Concordância substancial |
+| `llm_vs_lexico_referencia` | 200 | 0,3803 | Concordância razoável |
+| `manual_vs_lexico_referencia` | 200 | 0,3078 | Concordância razoável |
 
-A inclusão de `sentimento_llm_lag1` não reduziu o erro de previsão em $h=1$ mês na janela de teste, sugerindo que a sinalização do Copom atua em defasagens mais longas e já é parcialmente incorporada pelas variáveis macroeconômicas correntes.
+O LLM apresentou concordância substancial com a rotulagem humana (`kappa = 0,7357`), superando com folga o léxico de referência (`0,3078`), que sofre com o vocabulário técnico e condicional dos textos do Copom.
+
+Na avaliação walk-forward de 1 mês à frente sobre a especificação do melhor modelo nacional (`SARIMAX(1,0,0)` alinhado ao mês-alvo, `impacto_sentimento_sarimax.csv`, 12 meses de `2025-10-01` a `2026-09-01`):
+
+| Modelo | N | MAE | RMSE | MAPE (%) | sMAPE (%) | MASE |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: |
+| `sarimax_sem_sentimento` | 12 | **0,1073** | **0,1359** | 92,51 | 55,85 | **0,5693** |
+| `sarimax_com_sentimento` | 12 | 0,1121 | 0,1420 | **88,93** | **44,26** | 0,5951 |
+
+A inclusão de `sentimento_llm_lag1` reduziu o erro percentual relativo (**sMAPE** de `55,85%` para `44,26%` e **MAPE** de `92,51%` para `88,93%`), mas não reduziu **MAE**, **RMSE** nem **MASE** em $h = 1$ mês, sugerindo que a sinalização de política monetária do Copom já está incorporada às expectativas Focus e defasagens macroeconômicas em horizontes curtos e atua com defasagens de transmissão mais longas.
 
 ---
 
 ## 5. Limitações e Próximos Passos
 
-1. **Validação humana do sentimento:** a concordância foi medida entre o LLM e o léxico de referência (`kappa = 0,3803`); a validação humana (`manual_vs_llm`) requer o preenchimento dos 200 rótulos em `dados/tratados/rotulacao_manual.csv` e execução de `analise_sentimento.py validar`.
-2. **Cobertura parcial dos trechos e ausência de notícias:** foram classificados 200 trechos representativos (1 por documento) das atas e comunicados do Copom; notícias econômicas diárias não foram incorporadas nesta versão.
+1. **Cobertura parcial dos trechos e ausência de notícias:** a amostra validada de `200` documentos distintos foi rotulada integralmente por anotador humano (`manual_vs_llm = 0,7357`), mas o corpus completo possui `1.094` trechos (atas longas) e não inclui notícias econômicas diárias nesta versão.
+2. **Segundo anotador humano (`anotador_1_vs_anotador_2`):** a coluna opcional `rotulo_manual_2` permanece sem preenchimento, permitindo futuramente mensurar a concordância inter-anotadores humanos.
 3. **Amostra de teste reduzida para o teste de Diebold-Mariano:** com 10 a 12 observações fora da amostra por horizonte, o poder estatístico do teste é limitado, dificultando a rejeição da hipótese nula de igualdade preditiva.
 4. **Sensibilidade do MAPE a valores próximos de zero:** variações mensais de IPCA próximas de `0,00%` distorcem o MAPE, exigindo leitura conjunta com MASE, MAE e RMSE.
-5. **Próximos passos:** preencher a rotulagem humana para validar o kappa `manual_vs_llm`, classificar todos os 1.094 trechos de atas longas e incorporar notícias econômicas.
+5. **Próximos passos:** classificar via API todos os 1.094 trechos do corpus, avaliar defasagens mais longas de sentimento ($t - 2$, $t - 3$ ou acumulados em janela móvel) e incorporar notícias econômicas.

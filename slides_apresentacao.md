@@ -97,23 +97,24 @@ Modelos globais com efeitos fixos (`OneHotEncoder`) e perfil sazonal local super
 
 ---
 
-## 8. Sentimento do Copom com LLM (Etapa 6)
+## 8. Sentimento do Copom com LLM e Validação Humana (Etapa 6)
 
-- **Classificação LLM (`rotulo_llm.json`):** 200 documentos distintos (`76` neutros, `76` contracionistas, `48` expansionistas), **kappa = `0,3803`** vs. léxico de referência.
-- **Impacto no SARIMAX walk-forward ($h = 1$ mês, 12 meses de teste):**
+- **Amostra validada (200 documentos distintos):** humano (`108` neutros, `59` contracionistas, `33` expansionistas) vs. LLM (`76`, `76`, `48`).
+- **Kappa de Cohen (`validacao_sentimento.csv`):** `manual_vs_llm` = **`0,7357`** (substancial) vs. `manual_vs_lexico` = `0,3078` e `llm_vs_lexico` = `0,3803`.
+- **Impacto no melhor SARIMAX walk-forward ($h = 1$ mês, 12 meses de teste):**
 
 | Modelo | MAE | RMSE | sMAPE (%) | MASE |
 | :--- | :---: | :---: | :---: | :---: |
-| `sarimax_sem_sentimento` | **0,1329** | **0,1668** | **63,08** | **0,8674** |
-| `sarimax_com_sentimento` | 0,1430 | 0,1771 | 70,17 | 0,9335 |
+| `sarimax_sem_sentimento` | **0,1073** | **0,1359** | 55,85 | **0,5693** |
+| `sarimax_com_sentimento` | 0,1121 | 0,1420 | **44,26** | 0,5951 |
 
-O tom defasado em 1 mês não melhorou o SARIMAX em $h=1$, indicando defasagem maior de transmissão ou incorporação prévia nas variáveis macro.
+O sentimento defasado melhorou o sMAPE (`44,26%` vs. `55,85%`), mas não reduziu MAE/RMSE/MASE em $h=1$.
 
 ---
 
 ## 9. Limitações e Próximos Passos
 
-- **Rotulagem humana:** preencher os 200 rótulos em `rotulacao_manual.csv` para medir o kappa `manual_vs_llm`.
+- **Validação humana concluída (1 anotador):** 200 textos rotulados (`kappa = 0,7357`); falta apenas eventual 2º anotador (`rotulo_manual_2`).
 - **Cobertura textual:** expandir dos 200 trechos representativos para os 1.094 trechos completos e incluir notícias econômicas.
 - **Métricas:** usar MASE/sMAPE em vez de MAPE devido a valores de IPCA próximos de zero.
 - **Amostra de teste:** ampliar a janela fora da amostra para maior poder no teste de Diebold-Mariano.
