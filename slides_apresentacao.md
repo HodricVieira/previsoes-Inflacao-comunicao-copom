@@ -99,22 +99,22 @@ Modelos globais com efeitos fixos (`OneHotEncoder`) e perfil sazonal local super
 
 ## 8. Sentimento do Copom com LLM e Validação Humana (Etapa 6)
 
-- **Amostra validada (200 documentos distintos):** humano (`108` neutros, `59` contracionistas, `33` expansionistas) vs. LLM (`76`, `76`, `48`).
-- **Kappa de Cohen (`validacao_sentimento.csv`):** `manual_vs_llm` = **`0,7357`** (substancial) vs. `manual_vs_lexico` = `0,3078` e `llm_vs_lexico` = `0,3803`.
+- **Corpus integral via LLM:** **`1.094 / 1.094` trechos** de todos os **`238` documentos** (`149` meses com publicação; `500` neutros, `377` contracionistas, `217` expansionistas).
+- **Validação humana (200 docs):** `manual_vs_llm` = **`0,7357`** (substancial) vs. `manual_vs_lexico` = `0,3078` e `llm_vs_lexico` = `0,3803`.
 - **Impacto no melhor SARIMAX walk-forward ($h = 1$ mês, 12 meses de teste):**
 
 | Modelo | MAE | RMSE | sMAPE (%) | MASE |
 | :--- | :---: | :---: | :---: | :---: |
-| `sarimax_sem_sentimento` | **0,1073** | **0,1359** | 55,85 | **0,5693** |
-| `sarimax_com_sentimento` | 0,1121 | 0,1420 | **44,26** | 0,5951 |
+| `sarimax_sem_sentimento` | 0,1073 | 0,1359 | 55,85 | 0,5693 |
+| `sarimax_com_sentimento` | **0,1017** | **0,1289** | **39,26** | **0,5396** |
 
-O sentimento defasado melhorou o sMAPE (`44,26%` vs. `55,85%`), mas não reduziu MAE/RMSE/MASE em $h=1$.
+A inclusão de `sentimento_llm_lag1` reduziu o erro em **todas as métricas** (`-5,2%` no MAE e `-5,1%` no RMSE).
 
 ---
 
 ## 9. Limitações e Próximos Passos
 
-- **Validação humana concluída (1 anotador):** 200 textos rotulados (`kappa = 0,7357`); falta apenas eventual 2º anotador (`rotulo_manual_2`).
-- **Cobertura textual:** expandir dos 200 trechos representativos para os 1.094 trechos completos e incluir notícias econômicas.
+- **Validação humana (1 anotador):** 200 textos validados (`kappa = 0,7357`); falta apenas eventual 2º anotador (`rotulo_manual_2`).
+- **Fontes textuais:** todo o corpus oficial do Copom (`1.094` trechos) foi classificado; próximo passo é incorporar notícias econômicas.
 - **Métricas:** usar MASE/sMAPE em vez de MAPE devido a valores de IPCA próximos de zero.
 - **Amostra de teste:** ampliar a janela fora da amostra para maior poder no teste de Diebold-Mariano.

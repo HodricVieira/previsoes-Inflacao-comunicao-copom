@@ -1,130 +1,130 @@
 ﻿documento_id,escore_llm,n_trechos_llm,escore_lexico,n_trechos,tipo_fonte,data_publicacao,nro_reuniao,titulo,url_fonte
-ata_164,-1.0,1,0.29260613827177295,19,ata,2012-01-26,164,164ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=164
-ata_165,0.0,1,0.14214864083285134,19,ata,2012-03-15,165,165ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=165
-ata_166,0.0,1,0.158335491668825,18,ata,2012-04-26,166,166ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=166
-ata_167,0.0,1,0.179947229508633,18,ata,2012-06-08,167,167ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=167
-ata_168,0.0,1,0.04154240820907488,18,ata,2012-07-19,168,168ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=168
-ata_169,0.0,1,0.2537596662596663,18,ata,2012-09-06,169,169ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=169
-ata_170,0.0,1,0.19961119127785792,18,ata,2012-10-18,170,170ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=170
-ata_171,0.0,1,0.2296664120193532,17,ata,2012-12-06,171,171ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=171
-ata_172,0.0,1,0.34832451499118167,18,ata,2013-01-24,172,172ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=172
-ata_173,,0,0.23802777889465196,17,ata,2013-03-14,173,173ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=173
-ata_174,0.2,1,0.237805331922979,17,ata,2013-04-25,174,174ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=174
-ata_175,0.6,1,0.3451569264069264,16,ata,2013-06-06,175,175ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=175
-ata_176,,0,0.39547443977591035,16,ata,2013-07-18,176,176ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=176
-ata_177,0.0,1,0.38093052780552783,16,ata,2013-09-05,177,177ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=177
-ata_178,0.0,1,0.4178804855275443,17,ata,2013-10-17,178,178ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=178
-ata_179,0.5,1,0.3848859473859474,16,ata,2013-12-05,179,179ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=179
-ata_180,0.0,1,0.5242509124862066,17,ata,2014-01-23,180,180ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=180
-ata_181,0.0,1,0.1071969696969697,8,ata,2014-03-06,181,181ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=181
-ata_182,0.8,1,0.42410714285714285,8,ata,2014-04-10,182,182ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=182
-ata_183,0.0,1,0.06666666666666667,8,ata,2014-06-05,183,183ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=183
-ata_184,0.2,1,0.020833333333333343,8,ata,2014-07-24,184,184ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=184
-ata_185,,0,0.022619047619047622,8,ata,2014-09-11,185,185ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=185
-ata_186,0.0,1,0.20952380952380953,8,ata,2014-11-06,186,186ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=186
-ata_187,0.0,1,-0.0035714285714285587,8,ata,2014-12-11,187,187ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=187
-ata_188,0.0,1,0.14166666666666666,8,ata,2015-01-29,188,188ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=188
-ata_189,0.5,1,0.05,8,ata,2015-03-12,189,189ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=189
-ata_190,0.0,1,0.08541666666666665,8,ata,2015-05-07,190,190ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=190
-ata_191,,0,0.11041666666666666,8,ata,2015-06-11,191,191ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=191
-ata_192,0.0,1,0.06547619047619048,8,ata,2015-08-06,192,192ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=192
-ata_193,,0,0.2,8,ata,2015-09-10,193,193ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=193
-ata_194,0.0,1,0.15714285714285714,8,ata,2015-10-29,194,194ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=194
-ata_195,0.4,1,0.10833333333333334,8,ata,2015-12-03,195,195ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=195
-ata_196,0.0,1,-0.04166666666666666,8,ata,2016-01-28,196,196ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=196
-ata_197,0.0,1,0.08035714285714285,8,ata,2016-03-10,197,197ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=197
-ata_198,0.1,1,-0.12777777777777777,8,ata,2016-05-05,198,198ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=198
-ata_199,0.3,1,-0.23055555555555554,8,ata,2016-06-16,199,199ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=199
-ata_200,0.0,1,-0.24305555555555558,4,ata,2016-07-26,200,200ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM200-not20160720200.PDF
-ata_201,0.0,1,-0.2866666666666667,5,ata,2016-09-06,201,201ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM201-not20160831201.pdf
-ata_202,0.1,1,-0.5333333333333334,5,ata,2016-10-25,202,202ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM202-not20161019202.pdf
-ata_203,-0.6,1,-0.7333333333333333,5,ata,2016-12-06,203,203ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM203-not20161130203.pdf
-ata_204,-0.2,1,-0.7095238095238094,5,ata,2017-01-17,204,204ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM204-not20170111204.pdf
-ata_205,-0.2,1,-0.39682539682539686,5,ata,2017-03-02,205,205ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM205-not20170222205.pdf
-ata_206,-1.0,1,-0.48888888888888893,5,ata,2017-04-18,206,206ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM206-not20170412206.pdf
-ata_207,-0.7,1,-0.1603896103896104,5,ata,2017-06-06,207,207ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM207-not20170531207.pdf
-ata_208,,0,-0.38168498168498166,5,ata,2017-08-01,208,208ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM208-not20170726208.pdf
-ata_209,-0.2,1,-0.44952380952380955,5,ata,2017-09-12,209,209ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM209-not20170906209.pdf
-ata_210,0.0,1,-0.26900584795321636,5,ata,2017-10-31,210,210ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM210-not20171025210.pdf
-ata_211,0.0,1,-0.43838383838383843,5,ata,2017-12-12,211,211ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM211-not20171206211.pdf
-ata_212,0.0,1,-0.24888888888888888,5,ata,2018-02-15,212,212ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM212-not20180207212.pdf
-ata_213,-0.7,1,-0.20158730158730162,6,ata,2018-03-27,213,213ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM213-not20180321213.pdf
-ata_214,0.0,1,-0.4583333333333333,6,ata,2018-05-22,214,214ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM214-not20180516214.pdf
-ata_215,0.0,1,-0.42857142857142855,5,ata,2018-06-26,215,215ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM215-not20180620215.pdf
-ata_216,,0,-0.05833333333333333,6,ata,2018-08-07,216,216ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM216-not20180801216.pdf
-ata_217,0.2,1,-0.18857142857142856,5,ata,2018-09-25,217,217ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM217-not20180919217.pdf
-ata_218,0.0,1,-0.0009090909090909039,5,ata,2018-11-06,218,218ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM218-not20181031218.pdf
-ata_219,0.0,1,0.22142857142857142,4,ata,2018-12-18,219,219ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM219-not20181212219.pdf
-ata_220,0.0,1,-0.1157142857142857,5,ata,2019-02-12,220,220ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM220-not20190206220.pdf
-ata_221,0.0,1,0.07575757575757577,5,ata,2019-03-26,221,221ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM221-not20190320221.pdf
-ata_222,0.0,1,-0.35,5,ata,2019-05-14,222,222ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM222-not20190508222.pdf
-ata_223,0.0,1,-0.018181818181818188,5,ata,2019-06-25,223,223ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom223-not20190619223.pdf
-ata_224,,0,-0.0537037037037037,6,ata,2019-08-06,224,224ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom224-not20190731224.pdf
-ata_225,,0,-0.06857142857142857,5,ata,2019-09-24,225,225ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom225-not20190918225.pdf
-ata_226,-0.6,1,-0.20222222222222222,5,ata,2019-11-05,226,226ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom226-not20191030226.pdf
-ata_227,-0.6,1,-0.2727272727272727,4,ata,2019-12-17,227,227ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom227-not20191211227.pdf
-ata_228,0.0,1,0.0,4,ata,2020-02-11,228,228ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom228-not20200205228.pdf
-ata_229,0.0,1,-0.034722222222222224,4,ata,2020-03-23,229,229ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom229-not20200318229.pdf
-ata_230,,0,-0.2708333333333333,4,ata,2020-05-12,230,230ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom230-not20200506230.pdf
-ata_231,0.0,1,-0.4326923076923077,4,ata,2020-06-23,231,231ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom231-not20200617231.pdf
-ata_232,-0.6,1,-0.2504329004329004,5,ata,2020-08-11,232,"232ª Reunião - 4-5 agosto, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=232
-ata_233,0.0,1,-0.2170995670995671,5,ata,2020-09-22,233,"233ª Reunião - 15-16 setembro, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=233
-ata_234,-0.5,1,-0.09027777777777779,4,ata,2020-11-03,234,"234ª Reunião - 27-28 outubro, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=234
-ata_235,-0.1,1,0.3181818181818182,4,ata,2020-12-15,235,"235ª Reunião - 8-9 dezembro, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=235
-ata_236,,0,0.12564102564102564,4,ata,2021-01-26,236,"236ª Reunião - 19-20 janeiro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=236
-ata_237,,0,0.08555555555555557,5,ata,2021-03-23,237,"237ª Reunião - 16-17 março, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=237
-ata_238,1.0,1,0.22916666666666669,4,ata,2021-05-11,238,"238ª Reunião - 4-5 maio, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=238
-ata_239,1.0,1,0.0357142857142857,4,ata,2021-06-22,239,"239ª Reunião - 15-16 junho, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=239
-ata_240,1.0,1,0.5625,4,ata,2021-08-10,240,"240ª Reunião - 3-4 agosto, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=240
-ata_241,0.8,1,0.4545454545454546,4,ata,2021-09-28,241,"241ª Reunião - 21-22 setembro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=241
-ata_242,0.0,1,0.6944444444444444,4,ata,2021-11-03,242,"242ª Reunião - 26-27 outubro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=242
-ata_243,0.0,1,0.5166666666666666,4,ata,2021-12-14,243,"243ª Reunião - 7-8 dezembro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=243
-ata_244,0.9,1,0.5511363636363636,4,ata,2022-02-08,244,"244ª Reunião - 1-2 fevereiro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=244
-ata_245,0.0,1,0.7191919191919192,5,ata,2022-03-22,245,"245ª Reunião - 15-16 março, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=245
-ata_246,0.0,1,0.5333333333333333,5,ata,2022-05-10,246,"246ª Reunião - 3-4 maio, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=246
-ata_247,0.9,1,0.43060606060606055,5,ata,2022-06-21,247,"247ª Reunião - 14-15 junho, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=247
-ata_248,,0,0.30158730158730157,6,ata,2022-08-09,248,"248ª Reunião - 2-3 agosto, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=248
-ata_249,,0,0.09722222222222222,6,ata,2022-09-27,249,"249ª Reunião - 20-21 setembro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=249
-ata_250,0.4,1,-0.08214285714285714,6,ata,2022-11-01,250,"250ª Reunião - 25-26 outubro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=250
-ata_251,0.4,1,-0.30129870129870134,7,ata,2022-12-13,251,"251ª Reunião - 6-7 dezembro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=251
-ata_252,0.4,1,-0.054884004884004876,7,ata,2023-02-07,252,"252ª Reunião - 31 janeiro - 1 fevereiro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=252
-ata_253,0.0,1,0.007421150278293138,7,ata,2023-03-28,253,"253ª Reunião - 21-22 março, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=253
-ata_254,0.0,1,0.04624304267161411,7,ata,2023-05-09,254,"254ª Reunião - 2-3 maio, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=254
-ata_255,0.2,1,-0.08276643990929704,7,ata,2023-06-27,255,"255ª Reunião - 20-21 junho, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=255
-ata_256,0.0,1,-0.20427489177489178,8,ata,2023-08-08,256,"256ª Reunião - 1-2 agosto, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=256
-ata_257,0.0,1,-0.052345938375350134,8,ata,2023-09-26,257,"257ª Reunião - 19-20 setembro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=257
-ata_258,0.3,1,0.0244866244866245,7,ata,2023-11-07,258,"258ª Reunião - 31 outubro - 1 novembro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=258
-ata_259,0.2,1,-0.10952380952380952,6,ata,2023-12-19,259,"259ª Reunião - 12-13 dezembro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=259
-ata_260,0.0,1,-0.11428571428571428,7,ata,2024-02-06,260,"260ª Reunião - 30-31 janeiro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=260
-ata_261,0.0,1,-0.12824675324675325,8,ata,2024-03-26,261,"261ª Reunião - 19-20 março, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=261
-ata_262,,0,0.06127989657401422,7,ata,2024-05-14,262,"262ª Reunião - 7-8 maio, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=262
-ata_263,,0,-0.05755464578993991,6,ata,2024-06-25,263,"263ª Reunião - 18-19 junho, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=263
-ata_264,0.0,1,-0.13463203463203463,6,ata,2024-08-06,264,"264ª Reunião - 30-31 julho, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=264
-ata_265,0.0,1,0.11717171717171716,6,ata,2024-09-24,265,"265ª Reunião - 17-18 setembro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=265
-ata_266,0.0,1,-0.02491299550123079,6,ata,2024-11-14,266,"266ª Reunião - 5-6 novembro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=266
-ata_267,0.4,1,0.5106837606837606,6,ata,2024-12-17,267,"267ª Reunião - 10-11 dezembro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=267
-ata_268,0.0,1,0.5102040816326531,7,ata,2025-02-04,268,"268ª Reunião - 28-29 janeiro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=268
-ata_269,0.7,1,0.39141810570382,7,ata,2025-03-25,269,"269ª Reunião - 18-19 março, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=269
-ata_270,,0,0.2869701726844584,7,ata,2025-05-13,270,"270ª Reunião - 6-7 maio, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=270
-ata_271,0.0,1,0.11421911421911422,6,ata,2025-06-24,271,"271ª Reunião - 17-18 junho, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=271
-ata_272,0.0,1,0.17676767676767677,6,ata,2025-08-05,272,"272ª Reunião - 29-30 julho, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=272
-ata_273,,0,0.038888888888888896,6,ata,2025-09-23,273,"273ª Reunião - 16-17 setembro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=273
-ata_274,0.0,1,0.15757575757575756,5,ata,2025-11-11,274,"274ª Reunião - 4-5 novembro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=274
-ata_275,,0,-0.08205128205128207,5,ata,2025-12-16,275,"275ª Reunião - 9-10 dezembro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=275
-ata_276,,0,0.11794871794871795,5,ata,2026-02-03,276,"276ª Reunião - 27-28 janeiro, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=276
-ata_277,,0,0.3181818181818182,5,ata,2026-03-24,277,"277ª Reunião - 17-18 março, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=277
-ata_278,0.7,1,0.19552447552447552,5,ata,2026-05-05,278,"278ª Reunião - 28-29 abril, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=278
-ata_279,,0,0.27606837606837603,6,ata,2026-06-23,279,"279ª Reunião - 16-17 junho, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=279
-ata_280,0.2,1,0.44871794871794873,5,ata,2026-08-11,280,"280ª Reunião - 4-5 agosto, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=280
-ata_281,0.7,1,0.317948717948718,5,ata,2026-09-22,281,"281ª Reunião - 15-16 setembro, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=281
-ata_282,0.7,1,0.47115384615384615,5,ata,2026-11-10,282,"282ª Reunião - 3-4 novembro, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=282
-comunicado_164,,0,0.0,1,comunicado,2012-01-18,164,Nota à Imprensa - 164ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=164
+ata_164,-0.15789473684210525,19,0.29260613827177295,19,ata,2012-01-26,164,164ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=164
+ata_165,-0.47368421052631576,19,0.14214864083285134,19,ata,2012-03-15,165,165ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=165
+ata_166,-0.4833333333333333,18,0.158335491668825,18,ata,2012-04-26,166,166ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=166
+ata_167,-0.22777777777777775,18,0.179947229508633,18,ata,2012-06-08,167,167ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=167
+ata_168,-0.19444444444444445,18,0.04154240820907488,18,ata,2012-07-19,168,168ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=168
+ata_169,-0.1388888888888889,18,0.2537596662596663,18,ata,2012-09-06,169,169ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=169
+ata_170,-0.24444444444444446,18,0.19961119127785792,18,ata,2012-10-18,170,170ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=170
+ata_171,0.11764705882352941,17,0.2296664120193532,17,ata,2012-12-06,171,171ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=171
+ata_172,0.20555555555555557,18,0.34832451499118167,18,ata,2013-01-24,172,172ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=172
+ata_173,0.15882352941176472,17,0.23802777889465196,17,ata,2013-03-14,173,173ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=173
+ata_174,0.18823529411764706,17,0.237805331922979,17,ata,2013-04-25,174,174ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=174
+ata_175,0.35,16,0.3451569264069264,16,ata,2013-06-06,175,175ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=175
+ata_176,0.3125,16,0.39547443977591035,16,ata,2013-07-18,176,176ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=176
+ata_177,0.53125,16,0.38093052780552783,16,ata,2013-09-05,177,177ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=177
+ata_178,0.3588235294117647,17,0.4178804855275443,17,ata,2013-10-17,178,178ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=178
+ata_179,0.28125,16,0.3848859473859474,16,ata,2013-12-05,179,179ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=179
+ata_180,0.11764705882352941,17,0.5242509124862066,17,ata,2014-01-23,180,180ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=180
+ata_181,0.375,8,0.1071969696969697,8,ata,2014-03-06,181,181ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=181
+ata_182,0.475,8,0.42410714285714285,8,ata,2014-04-10,182,182ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=182
+ata_183,0.5,8,0.06666666666666667,8,ata,2014-06-05,183,183ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=183
+ata_184,0.275,8,0.020833333333333343,8,ata,2014-07-24,184,184ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=184
+ata_185,0.375,8,0.022619047619047622,8,ata,2014-09-11,185,185ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=185
+ata_186,0.38749999999999996,8,0.20952380952380953,8,ata,2014-11-06,186,186ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=186
+ata_187,0.4375,8,-0.0035714285714285587,8,ata,2014-12-11,187,187ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=187
+ata_188,0.475,8,0.14166666666666666,8,ata,2015-01-29,188,188ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=188
+ata_189,0.5625,8,0.05,8,ata,2015-03-12,189,189ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=189
+ata_190,0.625,8,0.08541666666666665,8,ata,2015-05-07,190,190ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=190
+ata_191,0.625,8,0.11041666666666666,8,ata,2015-06-11,191,191ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=191
+ata_192,0.5,8,0.06547619047619048,8,ata,2015-08-06,192,192ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=192
+ata_193,0.375,8,0.2,8,ata,2015-09-10,193,193ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=193
+ata_194,0.375,8,0.15714285714285714,8,ata,2015-10-29,194,194ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=194
+ata_195,0.5,8,0.10833333333333334,8,ata,2015-12-03,195,195ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=195
+ata_196,0.48750000000000004,8,-0.04166666666666666,8,ata,2016-01-28,196,196ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=196
+ata_197,0.5,8,0.08035714285714285,8,ata,2016-03-10,197,197ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=197
+ata_198,0.3875,8,-0.12777777777777777,8,ata,2016-05-05,198,198ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=198
+ata_199,0.4125,8,-0.23055555555555554,8,ata,2016-06-16,199,199ª Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=199
+ata_200,0.5,4,-0.24305555555555558,4,ata,2016-07-26,200,200ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM200-not20160720200.PDF
+ata_201,0.0,5,-0.2866666666666667,5,ata,2016-09-06,201,201ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM201-not20160831201.pdf
+ata_202,-0.58,5,-0.5333333333333334,5,ata,2016-10-25,202,202ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM202-not20161019202.pdf
+ata_203,-0.52,5,-0.7333333333333333,5,ata,2016-12-06,203,203ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM203-not20161130203.pdf
+ata_204,-0.64,5,-0.7095238095238094,5,ata,2017-01-17,204,204ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM204-not20170111204.pdf
+ata_205,-0.64,5,-0.39682539682539686,5,ata,2017-03-02,205,205ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM205-not20170222205.pdf
+ata_206,-0.44000000000000006,5,-0.48888888888888893,5,ata,2017-04-18,206,206ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM206-not20170412206.pdf
+ata_207,-0.54,5,-0.1603896103896104,5,ata,2017-06-06,207,207ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM207-not20170531207.pdf
+ata_208,-0.54,5,-0.38168498168498166,5,ata,2017-08-01,208,208ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM208-not20170726208.pdf
+ata_209,-0.44000000000000006,5,-0.44952380952380955,5,ata,2017-09-12,209,209ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM209-not20170906209.pdf
+ata_210,-0.54,5,-0.26900584795321636,5,ata,2017-10-31,210,210ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM210-not20171025210.pdf
+ata_211,-0.3,5,-0.43838383838383843,5,ata,2017-12-12,211,211ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM211-not20171206211.pdf
+ata_212,-0.15,5,-0.24888888888888888,5,ata,2018-02-15,212,212ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM212-not20180207212.pdf
+ata_213,-0.19999999999999998,6,-0.20158730158730162,6,ata,2018-03-27,213,213ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM213-not20180321213.pdf
+ata_214,0.0,6,-0.4583333333333333,6,ata,2018-05-22,214,214ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM214-not20180516214.pdf
+ata_215,-0.1,5,-0.42857142857142855,5,ata,2018-06-26,215,215ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM215-not20180620215.pdf
+ata_216,-0.16666666666666666,6,-0.05833333333333333,6,ata,2018-08-07,216,216ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM216-not20180801216.pdf
+ata_217,-0.16,5,-0.18857142857142856,5,ata,2018-09-25,217,217ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM217-not20180919217.pdf
+ata_218,-0.2,5,-0.0009090909090909039,5,ata,2018-11-06,218,218ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM218-not20181031218.pdf
+ata_219,-0.25,4,0.22142857142857142,4,ata,2018-12-18,219,219ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM219-not20181212219.pdf
+ata_220,0.0,5,-0.1157142857142857,5,ata,2019-02-12,220,220ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM220-not20190206220.pdf
+ata_221,0.0,5,0.07575757575757577,5,ata,2019-03-26,221,221ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM221-not20190320221.pdf
+ata_222,0.0,5,-0.35,5,ata,2019-05-14,222,222ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/COPOM222-not20190508222.pdf
+ata_223,0.0,5,-0.018181818181818188,5,ata,2019-06-25,223,223ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom223-not20190619223.pdf
+ata_224,-1.0,6,-0.0537037037037037,6,ata,2019-08-06,224,224ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom224-not20190731224.pdf
+ata_225,-0.2,5,-0.06857142857142857,5,ata,2019-09-24,225,225ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom225-not20190918225.pdf
+ata_226,-0.32,5,-0.20222222222222222,5,ata,2019-11-05,226,226ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom226-not20191030226.pdf
+ata_227,-0.4,4,-0.2727272727272727,4,ata,2019-12-17,227,227ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom227-not20191211227.pdf
+ata_228,-0.25,4,0.0,4,ata,2020-02-11,228,228ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom228-not20200205228.pdf
+ata_229,-0.5,4,-0.034722222222222224,4,ata,2020-03-23,229,229ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom229-not20200318229.pdf
+ata_230,-0.5,4,-0.2708333333333333,4,ata,2020-05-12,230,230ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom230-not20200506230.pdf
+ata_231,-0.5,4,-0.4326923076923077,4,ata,2020-06-23,231,231ª Reunião,https://www.bcb.gov.br/content/copom/atascopom/Copom231-not20200617231.pdf
+ata_232,-0.52,5,-0.2504329004329004,5,ata,2020-08-11,232,"232ª Reunião - 4-5 agosto, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=232
+ata_233,-0.2,5,-0.2170995670995671,5,ata,2020-09-22,233,"233ª Reunião - 15-16 setembro, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=233
+ata_234,-0.25,4,-0.09027777777777779,4,ata,2020-11-03,234,"234ª Reunião - 27-28 outubro, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=234
+ata_235,-0.025,4,0.3181818181818182,4,ata,2020-12-15,235,"235ª Reunião - 8-9 dezembro, 2020",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=235
+ata_236,0.0,4,0.12564102564102564,4,ata,2021-01-26,236,"236ª Reunião - 19-20 janeiro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=236
+ata_237,0.8,5,0.08555555555555557,5,ata,2021-03-23,237,"237ª Reunião - 16-17 março, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=237
+ata_238,0.75,4,0.22916666666666669,4,ata,2021-05-11,238,"238ª Reunião - 4-5 maio, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=238
+ata_239,1.0,4,0.0357142857142857,4,ata,2021-06-22,239,"239ª Reunião - 15-16 junho, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=239
+ata_240,0.5,4,0.5625,4,ata,2021-08-10,240,"240ª Reunião - 3-4 agosto, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=240
+ata_241,0.45,4,0.4545454545454546,4,ata,2021-09-28,241,"241ª Reunião - 21-22 setembro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=241
+ata_242,0.5,4,0.6944444444444444,4,ata,2021-11-03,242,"242ª Reunião - 26-27 outubro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=242
+ata_243,0.5,4,0.5166666666666666,4,ata,2021-12-14,243,"243ª Reunião - 7-8 dezembro, 2021",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=243
+ata_244,0.475,4,0.5511363636363636,4,ata,2022-02-08,244,"244ª Reunião - 1-2 fevereiro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=244
+ata_245,0.4,5,0.7191919191919192,5,ata,2022-03-22,245,"245ª Reunião - 15-16 março, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=245
+ata_246,0.4,5,0.5333333333333333,5,ata,2022-05-10,246,"246ª Reunião - 3-4 maio, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=246
+ata_247,0.38,5,0.43060606060606055,5,ata,2022-06-21,247,"247ª Reunião - 14-15 junho, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=247
+ata_248,0.3333333333333333,6,0.30158730158730157,6,ata,2022-08-09,248,"248ª Reunião - 2-3 agosto, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=248
+ata_249,0.0,6,0.09722222222222222,6,ata,2022-09-27,249,"249ª Reunião - 20-21 setembro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=249
+ata_250,0.48333333333333334,6,-0.08214285714285714,6,ata,2022-11-01,250,"250ª Reunião - 25-26 outubro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=250
+ata_251,0.5714285714285714,7,-0.30129870129870134,7,ata,2022-12-13,251,"251ª Reunião - 6-7 dezembro, 2022",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=251
+ata_252,0.5714285714285714,7,-0.054884004884004876,7,ata,2023-02-07,252,"252ª Reunião - 31 janeiro - 1 fevereiro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=252
+ata_253,0.4428571428571429,7,0.007421150278293138,7,ata,2023-03-28,253,"253ª Reunião - 21-22 março, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=253
+ata_254,0.31428571428571433,7,0.04624304267161411,7,ata,2023-05-09,254,"254ª Reunião - 2-3 maio, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=254
+ata_255,0.32857142857142857,7,-0.08276643990929704,7,ata,2023-06-27,255,"255ª Reunião - 20-21 junho, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=255
+ata_256,-0.0375,8,-0.20427489177489178,8,ata,2023-08-08,256,"256ª Reunião - 1-2 agosto, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=256
+ata_257,-0.375,8,-0.052345938375350134,8,ata,2023-09-26,257,"257ª Reunião - 19-20 setembro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=257
+ata_258,-0.24285714285714285,7,0.0244866244866245,7,ata,2023-11-07,258,"258ª Reunião - 31 outubro - 1 novembro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=258
+ata_259,-0.3,6,-0.10952380952380952,6,ata,2023-12-19,259,"259ª Reunião - 12-13 dezembro, 2023",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=259
+ata_260,0.14285714285714285,7,-0.11428571428571428,7,ata,2024-02-06,260,"260ª Reunião - 30-31 janeiro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=260
+ata_261,0.125,8,-0.12824675324675325,8,ata,2024-03-26,261,"261ª Reunião - 19-20 março, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=261
+ata_262,0.7142857142857143,7,0.06127989657401422,7,ata,2024-05-14,262,"262ª Reunião - 7-8 maio, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=262
+ata_263,0.5,6,-0.05755464578993991,6,ata,2024-06-25,263,"263ª Reunião - 18-19 junho, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=263
+ata_264,0.5,6,-0.13463203463203463,6,ata,2024-08-06,264,"264ª Reunião - 30-31 julho, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=264
+ata_265,0.3333333333333333,6,0.11717171717171716,6,ata,2024-09-24,265,"265ª Reunião - 17-18 setembro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=265
+ata_266,0.16666666666666666,6,-0.02491299550123079,6,ata,2024-11-14,266,"266ª Reunião - 5-6 novembro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=266
+ata_267,0.5666666666666667,6,0.5106837606837606,6,ata,2024-12-17,267,"267ª Reunião - 10-11 dezembro, 2024",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=267
+ata_268,0.7142857142857143,7,0.5102040816326531,7,ata,2025-02-04,268,"268ª Reunião - 28-29 janeiro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=268
+ata_269,0.8142857142857143,7,0.39141810570382,7,ata,2025-03-25,269,"269ª Reunião - 18-19 março, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=269
+ata_270,0.8571428571428571,7,0.2869701726844584,7,ata,2025-05-13,270,"270ª Reunião - 6-7 maio, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=270
+ata_271,0.6666666666666666,6,0.11421911421911422,6,ata,2025-06-24,271,"271ª Reunião - 17-18 junho, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=271
+ata_272,0.6666666666666666,6,0.17676767676767677,6,ata,2025-08-05,272,"272ª Reunião - 29-30 julho, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=272
+ata_273,0.6666666666666666,6,0.038888888888888896,6,ata,2025-09-23,273,"273ª Reunião - 16-17 setembro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=273
+ata_274,0.6,5,0.15757575757575756,5,ata,2025-11-11,274,"274ª Reunião - 4-5 novembro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=274
+ata_275,0.6,5,-0.08205128205128207,5,ata,2025-12-16,275,"275ª Reunião - 9-10 dezembro, 2025",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=275
+ata_276,0.0,5,0.11794871794871795,5,ata,2026-02-03,276,"276ª Reunião - 27-28 janeiro, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=276
+ata_277,0.0,5,0.3181818181818182,5,ata,2026-03-24,277,"277ª Reunião - 17-18 março, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=277
+ata_278,0.13999999999999999,5,0.19552447552447552,5,ata,2026-05-05,278,"278ª Reunião - 28-29 abril, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=278
+ata_279,0.5,6,0.27606837606837603,6,ata,2026-06-23,279,"279ª Reunião - 16-17 junho, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=279
+ata_280,0.64,5,0.44871794871794873,5,ata,2026-08-11,280,"280ª Reunião - 4-5 agosto, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=280
+ata_281,0.74,5,0.317948717948718,5,ata,2026-09-22,281,"281ª Reunião - 15-16 setembro, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=281
+ata_282,0.74,5,0.47115384615384615,5,ata,2026-11-10,282,"282ª Reunião - 3-4 novembro, 2026",https://www.bcb.gov.br/api/servico/sitebcb/copom/atas_detalhes?nro_reuniao=282
+comunicado_164,-1.0,1,0.0,1,comunicado,2012-01-18,164,Nota à Imprensa - 164ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=164
 comunicado_165,-1.0,1,-1.0,1,comunicado,2012-03-07,165,Nota à Imprensa - 165ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=165
 comunicado_166,-1.0,1,-1.0,1,comunicado,2012-04-18,166,Nota à Imprensa - 166ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=166
 comunicado_167,-1.0,1,-1.0,1,comunicado,2012-05-30,167,Nota à Imprensa - 167ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=167
 comunicado_168,-1.0,1,-1.0,1,comunicado,2012-07-11,168,Nota à Imprensa - 168ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=168
 comunicado_169,-0.7,1,-1.0,1,comunicado,2012-08-29,169,Nota à Imprensa - 169ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=169
-comunicado_170,,0,-1.0,1,comunicado,2012-10-10,170,Nota à Imprensa - 170ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=170
+comunicado_170,-1.0,1,-1.0,1,comunicado,2012-10-10,170,Nota à Imprensa - 170ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=170
 comunicado_171,0.0,1,0.0,1,comunicado,2012-11-28,171,Nota à Imprensa - 171ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=171
 comunicado_172,0.0,1,0.0,1,comunicado,2013-01-16,172,Nota à Imprensa - 172ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=172
 comunicado_173,0.0,1,0.0,1,comunicado,2013-03-06,173,Nota à Imprensa - 173ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=173
@@ -143,97 +143,97 @@ comunicado_185,0.0,1,0.0,1,comunicado,2014-09-03,185,Nota à Imprensa - 185ª. R
 comunicado_186,0.8,1,0.3333333333333333,1,comunicado,2014-10-29,186,Nota à Imprensa - 186ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=186
 comunicado_187,0.8,1,0.0,1,comunicado,2014-12-03,187,Nota à Imprensa - 187ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=187
 comunicado_188,1.0,1,1.0,1,comunicado,2015-01-21,188,Nota à Imprensa - 188ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=188
-comunicado_189,,0,1.0,1,comunicado,2015-03-04,189,Nota à Imprensa - 189ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=189
+comunicado_189,1.0,1,1.0,1,comunicado,2015-03-04,189,Nota à Imprensa - 189ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=189
 comunicado_190,1.0,1,1.0,1,comunicado,2015-04-29,190,Nota à Imprensa - 190ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=190
 comunicado_191,1.0,1,1.0,1,comunicado,2015-06-03,191,Nota à Imprensa - 191ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=191
 comunicado_192,0.9,1,1.0,1,comunicado,2015-07-29,192,Nota à Imprensa - 192ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=192
-comunicado_193,,0,0.0,1,comunicado,2015-09-02,193,Nota à Imprensa - 193ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=193
-comunicado_194,,0,0.0,1,comunicado,2015-10-21,194,Nota à Imprensa - 194ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=194
+comunicado_193,1.0,1,0.0,1,comunicado,2015-09-02,193,Nota à Imprensa - 193ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=193
+comunicado_194,1.0,1,0.0,1,comunicado,2015-10-21,194,Nota à Imprensa - 194ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=194
 comunicado_195,0.4,1,1.0,1,comunicado,2015-11-25,195,Nota à Imprensa - 195ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=195
 comunicado_196,0.4,1,1.0,1,comunicado,2016-01-20,196,Nota à Imprensa - 196ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=196
 comunicado_197,0.4,1,1.0,1,comunicado,2016-03-02,197,Nota à Imprensa - 197ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=197
 comunicado_198,0.3,1,0.0,1,comunicado,2016-04-27,198,Nota à Imprensa - 198ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=198
 comunicado_199,0.3,1,0.0,1,comunicado,2016-06-08,199,Nota à Imprensa - 199ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=199
 comunicado_200,0.3,1,-0.2,1,comunicado,2016-07-20,200,Nota à Imprensa - 200ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=200
-comunicado_201,-0.2,1,-0.21428571428571427,2,comunicado,2016-08-31,201,Nota à Imprensa - 201ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=201
-comunicado_202,-0.8,1,-0.7272727272727273,2,comunicado,2016-10-19,202,"Copom reduz a taxa Selic para 14,00% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=202
-comunicado_203,-1.0,1,-0.7692307692307692,2,comunicado,2016-11-30,203,"Copom reduz a taxa Selic para 13,75% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=203
-comunicado_204,-1.0,1,-0.8888888888888888,2,comunicado,2017-01-11,204,"Copom reduz a taxa Selic para 13,00% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=204
+comunicado_201,-0.1,2,-0.21428571428571427,2,comunicado,2016-08-31,201,Nota à Imprensa - 201ª. Reunião,https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=201
+comunicado_202,-0.9,2,-0.7272727272727273,2,comunicado,2016-10-19,202,"Copom reduz a taxa Selic para 14,00% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=202
+comunicado_203,-1.0,2,-0.7692307692307692,2,comunicado,2016-11-30,203,"Copom reduz a taxa Selic para 13,75% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=203
+comunicado_204,-1.0,2,-0.8888888888888888,2,comunicado,2017-01-11,204,"Copom reduz a taxa Selic para 13,00% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=204
 comunicado_205,-1.0,1,-1.0,1,comunicado,2017-02-22,205,"Copom reduz a taxa Selic para 12,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=205
-comunicado_206,-1.0,1,-1.0,2,comunicado,2017-04-12,206,"Copom reduz a taxa Selic para 11,25% ao ano  ",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=206
-comunicado_207,-0.7,1,-0.19230769230769232,2,comunicado,2017-05-31,207,"Copom reduz a taxa Selic para 10,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=207
-comunicado_208,0.0,1,-0.25,2,comunicado,2017-07-26,208,"Copom reduz a taxa Selic para 9,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=208
-comunicado_209,-0.5,1,-0.75,2,comunicado,2017-09-06,209,"Copom reduz a taxa Selic para 8,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=209
-comunicado_210,-0.7,1,-0.8571428571428572,2,comunicado,2017-10-25,210,"Copom reduz a taxa Selic para 7,50% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=210
-comunicado_211,-1.0,1,-0.8571428571428572,2,comunicado,2017-12-06,211,"Copom reduz a taxa Selic para 7,00% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=211
-comunicado_212,-0.3,1,-0.8571428571428572,2,comunicado,2018-02-07,212,"Copom reduz a taxa Selic para 6,75% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=212
-comunicado_213,-0.8,1,-0.8333333333333333,2,comunicado,2018-03-21,213,"Copom reduz taxa Selic para 6,50% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=213
-comunicado_214,-0.2,1,-0.8,2,comunicado,2018-05-16,214,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=214
-comunicado_215,-0.2,1,-0.75,2,comunicado,2018-06-20,215,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=215
-comunicado_216,0.0,1,-0.4,2,comunicado,2018-08-01,216,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=216
-comunicado_217,0.2,1,-0.5,2,comunicado,2018-09-19,217,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=217
-comunicado_218,0.1,1,-0.6,2,comunicado,2018-10-31,218,"Copom mantém taxa Selic em 6,50 % a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=218
-comunicado_219,,0,0.0,2,comunicado,2018-12-12,219,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=219
-comunicado_220,,0,-0.125,2,comunicado,2019-02-06,220,"Copom mantém taxa Selic em 6,50 % a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=220
-comunicado_221,-0.2,1,-0.5,2,comunicado,2019-03-20,221,"Copom mantém taxa Selic em 6,50 % ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=221
-comunicado_222,0.0,1,-0.5714285714285714,2,comunicado,2019-05-08,222,"Copom mantém taxa Selic em 6,50 % a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=222
-comunicado_223,-0.2,1,-0.1,2,comunicado,2019-06-19,223,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=223
-comunicado_224,-1.0,1,-0.6666666666666666,2,comunicado,2019-07-31,224,"Copom reduz taxa Selic para 6,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=224
-comunicado_225,-1.0,1,-0.6,2,comunicado,2019-09-18,225,"Copom reduz taxa Selic para 5,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=225
-comunicado_226,-1.0,1,-0.7142857142857143,2,comunicado,2019-10-30,226,"Copom reduz taxa Selic para 5,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=226
-comunicado_227,-1.0,1,-0.25,2,comunicado,2019-12-11,227,"Copom reduz taxa Selic para 4,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=227
-comunicado_228,-1.0,1,-0.5555555555555556,2,comunicado,2020-02-05,228,"Copom reduz taxa Selic para 4,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=228
-comunicado_229,-1.0,1,0.0,2,comunicado,2020-03-18,229,"Copom reduz a taxa Selic para 3,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=229
-comunicado_230,-1.0,1,-0.1285714285714286,2,comunicado,2020-05-06,230,"Copom reduz a taxa Selic para 3,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=230
-comunicado_231,,0,-0.5,2,comunicado,2020-06-17,231,"Copom reduz a taxa Selic para 2,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=231
-comunicado_232,,0,-0.375,2,comunicado,2020-08-05,232,"Copom reduz a taxa Selic para 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=232
-comunicado_233,-0.6,1,-0.22222222222222224,2,comunicado,2020-09-16,233,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=233
-comunicado_234,0.0,1,0.375,2,comunicado,2020-10-28,234,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=234
-comunicado_235,0.2,1,0.5,2,comunicado,2020-12-09,235,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=235
-comunicado_236,0.3,1,0.6,2,comunicado,2021-01-20,236,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=236
-comunicado_237,,0,0.30000000000000004,2,comunicado,2021-03-17,237,"Copom eleva a taxa Selic para 2,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=237
-comunicado_238,1.0,1,0.33333333333333337,2,comunicado,2021-05-05,238,"Copom eleva a taxa Selic para 3,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=238
-comunicado_239,1.0,1,0.6666666666666666,2,comunicado,2021-06-16,239,"Copom eleva a taxa Selic para 4,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=239
-comunicado_240,,0,0.75,2,comunicado,2021-08-04,240,"Copom eleva a taxa Selic para 5,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=240
-comunicado_241,1.0,1,0.7083333333333333,2,comunicado,2021-09-22,241,"Copom eleva a taxa Selic para 6,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=241
-comunicado_242,1.0,1,1.0,2,comunicado,2021-10-27,242,"Copom eleva a taxa Selic para 7,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=242
-comunicado_243,1.0,1,0.8333333333333333,2,comunicado,2021-12-08,243,"Copom eleva a taxa Selic para 9,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=243
-comunicado_244,1.0,1,0.7142857142857143,2,comunicado,2022-02-02,244,"Copom eleva a taxa Selic para 10,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=244
-comunicado_245,,0,0.8571428571428572,2,comunicado,2022-03-16,245,"Copom eleva a taxa Selic para 11,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=245
-comunicado_246,1.0,1,0.5,2,comunicado,2022-05-04,246,"Copom eleva a taxa Selic para 12,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=246
-comunicado_247,0.9,1,0.4444444444444444,2,comunicado,2022-06-15,247,"Copom eleva a taxa Selic para 13,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=247
-comunicado_248,0.8,1,0.39999999999999997,3,comunicado,2022-08-03,248,"Copom eleva a taxa Selic para 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=248
-comunicado_249,0.5,1,-0.25,2,comunicado,2022-09-21,249,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=249
-comunicado_250,0.4,1,-0.4444444444444444,2,comunicado,2022-10-26,250,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=250
-comunicado_251,0.0,1,0.08571428571428572,2,comunicado,2022-12-07,251,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=251
-comunicado_252,0.2,1,-0.16666666666666666,2,comunicado,2023-02-01,252,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=252
-comunicado_253,,0,0.02564102564102566,2,comunicado,2023-03-22,253,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=253
-comunicado_254,0.2,1,-0.06666666666666665,2,comunicado,2023-05-03,254,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=254
-comunicado_255,0.2,1,0.16666666666666666,2,comunicado,2023-06-21,255,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=255
-comunicado_256,-0.8,1,-0.3701298701298701,2,comunicado,2023-08-02,256,"Copom reduz a taxa Selic para 13,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=256
-comunicado_257,,0,-0.29166666666666663,2,comunicado,2023-09-20,257,"Copom reduz a taxa Selic para 12,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=257
-comunicado_258,-1.0,1,-0.25,2,comunicado,2023-11-01,258,"Copom reduz a taxa Selic para 12,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=258
-comunicado_259,-0.8,1,-0.3333333333333333,2,comunicado,2023-12-13,259,"Copom reduz a taxa Selic para 11,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=259
-comunicado_260,-1.0,1,-0.358974358974359,2,comunicado,2024-01-31,260,"Copom reduz a taxa Selic para 11,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=260
-comunicado_261,-0.8,1,-0.3214285714285714,2,comunicado,2024-03-20,261,"Copom reduz a taxa Selic para 10,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=261
-comunicado_262,-0.4,1,-0.14285714285714285,2,comunicado,2024-05-08,262,"Copom reduz a taxa Selic para 10,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=262
-comunicado_263,0.4,1,0.051282051282051266,2,comunicado,2024-06-19,263,"Copom mantém a taxa Selic em 10,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=263
-comunicado_264,0.2,1,0.07792207792207792,2,comunicado,2024-07-31,264,"Copom mantém a taxa Selic em 10,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=264
-comunicado_265,1.0,1,0.5384615384615384,2,comunicado,2024-09-18,265,"Copom eleva a taxa Selic para 10,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=265
-comunicado_266,0.5,1,0.5384615384615384,2,comunicado,2024-11-06,266,"Copom eleva a taxa Selic para 11,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=266
-comunicado_267,1.0,1,0.7272727272727273,2,comunicado,2024-12-11,267,"Copom eleva a taxa Selic para 12,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=267
-comunicado_268,1.0,1,0.8,2,comunicado,2025-01-29,268,"Copom eleva a taxa Selic para 13,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=268
-comunicado_269,0.7,1,0.5777777777777777,2,comunicado,2025-03-19,269,"Copom eleva a taxa Selic para 14,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=269
-comunicado_270,0.3,1,0.7,2,comunicado,2025-05-07,270,"Copom eleva a taxa Selic para 14,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=270
-comunicado_271,,0,0.7272727272727273,2,comunicado,2025-06-18,271,"Copom eleva a taxa Selic para 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=271
-comunicado_272,,0,0.7,2,comunicado,2025-07-30,272,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=272
-comunicado_273,0.0,1,0.7272727272727273,2,comunicado,2025-09-17,273,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=273
-comunicado_274,0.0,1,0.7272727272727273,2,comunicado,2025-11-05,274,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=274
-comunicado_275,0.0,1,0.7272727272727273,2,comunicado,2025-12-10,275,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=275
-comunicado_276,0.1,1,0.125,2,comunicado,2026-01-28,276,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=276
-comunicado_277,-0.7,1,0.4666666666666667,2,comunicado,2026-03-18,277,"Copom reduz a taxa Selic para 14,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=277
-comunicado_278,0.0,1,0.4666666666666667,2,comunicado,2026-04-29,278,"Copom reduz a taxa Selic para 14,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=278
-comunicado_279,0.0,1,0.7272727272727273,2,comunicado,2026-06-17,279,"Copom reduz a taxa Selic para 14,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=279
-comunicado_280,0.2,1,0.4,2,comunicado,2026-08-05,280,"Copom reduz a taxa Selic para 14,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=280
-comunicado_281,0.2,1,0.4,2,comunicado,2026-09-16,281,"Copom reduz a taxa Selic para  13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=281
-comunicado_282,0.3,1,0.6666666666666666,2,comunicado,2026-11-04,282,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=282
+comunicado_206,-1.0,2,-1.0,2,comunicado,2017-04-12,206,"Copom reduz a taxa Selic para 11,25% ao ano  ",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=206
+comunicado_207,-0.35,2,-0.19230769230769232,2,comunicado,2017-05-31,207,"Copom reduz a taxa Selic para 10,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=207
+comunicado_208,-0.4,2,-0.25,2,comunicado,2017-07-26,208,"Copom reduz a taxa Selic para 9,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=208
+comunicado_209,-0.65,2,-0.75,2,comunicado,2017-09-06,209,"Copom reduz a taxa Selic para 8,25% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=209
+comunicado_210,-0.7,2,-0.8571428571428572,2,comunicado,2017-10-25,210,"Copom reduz a taxa Selic para 7,50% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=210
+comunicado_211,-0.75,2,-0.8571428571428572,2,comunicado,2017-12-06,211,"Copom reduz a taxa Selic para 7,00% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=211
+comunicado_212,-0.275,2,-0.8571428571428572,2,comunicado,2018-02-07,212,"Copom reduz a taxa Selic para 6,75% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=212
+comunicado_213,-0.525,2,-0.8333333333333333,2,comunicado,2018-03-21,213,"Copom reduz taxa Selic para 6,50% ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=213
+comunicado_214,-0.1,2,-0.8,2,comunicado,2018-05-16,214,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=214
+comunicado_215,-0.1,2,-0.75,2,comunicado,2018-06-20,215,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=215
+comunicado_216,-0.25,2,-0.4,2,comunicado,2018-08-01,216,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=216
+comunicado_217,0.1,2,-0.5,2,comunicado,2018-09-19,217,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=217
+comunicado_218,-0.2,2,-0.6,2,comunicado,2018-10-31,218,"Copom mantém taxa Selic em 6,50 % a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=218
+comunicado_219,-0.25,2,0.0,2,comunicado,2018-12-12,219,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=219
+comunicado_220,-0.25,2,-0.125,2,comunicado,2019-02-06,220,"Copom mantém taxa Selic em 6,50 % a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=220
+comunicado_221,-0.1,2,-0.5,2,comunicado,2019-03-20,221,"Copom mantém taxa Selic em 6,50 % ao ano",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=221
+comunicado_222,0.0,2,-0.5714285714285714,2,comunicado,2019-05-08,222,"Copom mantém taxa Selic em 6,50 % a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=222
+comunicado_223,-0.1,2,-0.1,2,comunicado,2019-06-19,223,"Copom mantém taxa Selic em 6,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=223
+comunicado_224,-1.0,2,-0.6666666666666666,2,comunicado,2019-07-31,224,"Copom reduz taxa Selic para 6,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=224
+comunicado_225,-1.0,2,-0.6,2,comunicado,2019-09-18,225,"Copom reduz taxa Selic para 5,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=225
+comunicado_226,-1.0,2,-0.7142857142857143,2,comunicado,2019-10-30,226,"Copom reduz taxa Selic para 5,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=226
+comunicado_227,-1.0,2,-0.25,2,comunicado,2019-12-11,227,"Copom reduz taxa Selic para 4,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=227
+comunicado_228,-0.5,2,-0.5555555555555556,2,comunicado,2020-02-05,228,"Copom reduz taxa Selic para 4,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=228
+comunicado_229,-0.5,2,0.0,2,comunicado,2020-03-18,229,"Copom reduz a taxa Selic para 3,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=229
+comunicado_230,-1.0,2,-0.1285714285714286,2,comunicado,2020-05-06,230,"Copom reduz a taxa Selic para 3,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=230
+comunicado_231,-1.0,2,-0.5,2,comunicado,2020-06-17,231,"Copom reduz a taxa Selic para 2,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=231
+comunicado_232,-1.0,2,-0.375,2,comunicado,2020-08-05,232,"Copom reduz a taxa Selic para 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=232
+comunicado_233,-0.55,2,-0.22222222222222224,2,comunicado,2020-09-16,233,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=233
+comunicado_234,-0.25,2,0.375,2,comunicado,2020-10-28,234,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=234
+comunicado_235,0.1,2,0.5,2,comunicado,2020-12-09,235,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=235
+comunicado_236,0.15,2,0.6,2,comunicado,2021-01-20,236,"Copom mantém a taxa Selic em 2,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=236
+comunicado_237,1.0,2,0.30000000000000004,2,comunicado,2021-03-17,237,"Copom eleva a taxa Selic para 2,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=237
+comunicado_238,1.0,2,0.33333333333333337,2,comunicado,2021-05-05,238,"Copom eleva a taxa Selic para 3,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=238
+comunicado_239,1.0,2,0.6666666666666666,2,comunicado,2021-06-16,239,"Copom eleva a taxa Selic para 4,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=239
+comunicado_240,1.0,2,0.75,2,comunicado,2021-08-04,240,"Copom eleva a taxa Selic para 5,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=240
+comunicado_241,1.0,2,0.7083333333333333,2,comunicado,2021-09-22,241,"Copom eleva a taxa Selic para 6,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=241
+comunicado_242,1.0,2,1.0,2,comunicado,2021-10-27,242,"Copom eleva a taxa Selic para 7,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=242
+comunicado_243,1.0,2,0.8333333333333333,2,comunicado,2021-12-08,243,"Copom eleva a taxa Selic para 9,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=243
+comunicado_244,1.0,2,0.7142857142857143,2,comunicado,2022-02-02,244,"Copom eleva a taxa Selic para 10,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=244
+comunicado_245,0.5,2,0.8571428571428572,2,comunicado,2022-03-16,245,"Copom eleva a taxa Selic para 11,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=245
+comunicado_246,1.0,2,0.5,2,comunicado,2022-05-04,246,"Copom eleva a taxa Selic para 12,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=246
+comunicado_247,0.95,2,0.4444444444444444,2,comunicado,2022-06-15,247,"Copom eleva a taxa Selic para 13,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=247
+comunicado_248,0.6,3,0.39999999999999997,3,comunicado,2022-08-03,248,"Copom eleva a taxa Selic para 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=248
+comunicado_249,0.25,2,-0.25,2,comunicado,2022-09-21,249,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=249
+comunicado_250,0.7,2,-0.4444444444444444,2,comunicado,2022-10-26,250,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=250
+comunicado_251,0.5,2,0.08571428571428572,2,comunicado,2022-12-07,251,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=251
+comunicado_252,0.6,2,-0.16666666666666666,2,comunicado,2023-02-01,252,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=252
+comunicado_253,1.0,2,0.02564102564102566,2,comunicado,2023-03-22,253,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=253
+comunicado_254,0.35,2,-0.06666666666666665,2,comunicado,2023-05-03,254,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=254
+comunicado_255,0.35,2,0.16666666666666666,2,comunicado,2023-06-21,255,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=255
+comunicado_256,-0.65,2,-0.3701298701298701,2,comunicado,2023-08-02,256,"Copom reduz a taxa Selic para 13,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=256
+comunicado_257,-1.0,2,-0.29166666666666663,2,comunicado,2023-09-20,257,"Copom reduz a taxa Selic para 12,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=257
+comunicado_258,-1.0,2,-0.25,2,comunicado,2023-11-01,258,"Copom reduz a taxa Selic para 12,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=258
+comunicado_259,-0.9,2,-0.3333333333333333,2,comunicado,2023-12-13,259,"Copom reduz a taxa Selic para 11,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=259
+comunicado_260,-1.0,2,-0.358974358974359,2,comunicado,2024-01-31,260,"Copom reduz a taxa Selic para 11,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=260
+comunicado_261,-0.4,2,-0.3214285714285714,2,comunicado,2024-03-20,261,"Copom reduz a taxa Selic para 10,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=261
+comunicado_262,0.3,2,-0.14285714285714285,2,comunicado,2024-05-08,262,"Copom reduz a taxa Selic para 10,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=262
+comunicado_263,0.7,2,0.051282051282051266,2,comunicado,2024-06-19,263,"Copom mantém a taxa Selic em 10,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=263
+comunicado_264,0.6,2,0.07792207792207792,2,comunicado,2024-07-31,264,"Copom mantém a taxa Selic em 10,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=264
+comunicado_265,1.0,2,0.5384615384615384,2,comunicado,2024-09-18,265,"Copom eleva a taxa Selic para 10,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=265
+comunicado_266,0.75,2,0.5384615384615384,2,comunicado,2024-11-06,266,"Copom eleva a taxa Selic para 11,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=266
+comunicado_267,1.0,2,0.7272727272727273,2,comunicado,2024-12-11,267,"Copom eleva a taxa Selic para 12,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=267
+comunicado_268,1.0,2,0.8,2,comunicado,2025-01-29,268,"Copom eleva a taxa Selic para 13,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=268
+comunicado_269,0.85,2,0.5777777777777777,2,comunicado,2025-03-19,269,"Copom eleva a taxa Selic para 14,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=269
+comunicado_270,0.65,2,0.7,2,comunicado,2025-05-07,270,"Copom eleva a taxa Selic para 14,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=270
+comunicado_271,1.0,2,0.7272727272727273,2,comunicado,2025-06-18,271,"Copom eleva a taxa Selic para 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=271
+comunicado_272,1.0,2,0.7,2,comunicado,2025-07-30,272,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=272
+comunicado_273,0.5,2,0.7272727272727273,2,comunicado,2025-09-17,273,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=273
+comunicado_274,0.5,2,0.7272727272727273,2,comunicado,2025-11-05,274,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=274
+comunicado_275,0.5,2,0.7272727272727273,2,comunicado,2025-12-10,275,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=275
+comunicado_276,-0.45,2,0.125,2,comunicado,2026-01-28,276,"Copom mantém a taxa Selic em 15,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=276
+comunicado_277,-0.09999999999999998,2,0.4666666666666667,2,comunicado,2026-03-18,277,"Copom reduz a taxa Selic para 14,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=277
+comunicado_278,-0.25,2,0.4666666666666667,2,comunicado,2026-04-29,278,"Copom reduz a taxa Selic para 14,50% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=278
+comunicado_279,-0.25,2,0.7272727272727273,2,comunicado,2026-06-17,279,"Copom reduz a taxa Selic para 14,25% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=279
+comunicado_280,0.6,2,0.4,2,comunicado,2026-08-05,280,"Copom reduz a taxa Selic para 14,00% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=280
+comunicado_281,0.6,2,0.4,2,comunicado,2026-09-16,281,"Copom reduz a taxa Selic para  13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=281
+comunicado_282,0.65,2,0.6666666666666666,2,comunicado,2026-11-04,282,"Copom mantém a taxa Selic em 13,75% a.a.",https://www.bcb.gov.br/api/servico/sitebcb/copom/comunicados_detalhes?nro_reuniao=282

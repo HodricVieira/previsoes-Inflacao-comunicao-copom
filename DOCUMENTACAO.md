@@ -87,10 +87,10 @@ Lê automaticamente as variáveis de ambiente ou o arquivo `.env` (`_load_dotenv
 | :--- | :--- | :--- | :--- |
 | `coletar` | `--desde AAAA-MM-DD` | `coletar_documentos` | Baixa atas e comunicados oficiais do BCB desde 2012 (`238` documentos). |
 | `preparar` | — | `preparar_trechos` | Divide textos em `1.094` trechos (`CHUNK_SIZE=3500`), calcula escore léxico e gera amostra cega de `200` documentos em `rotulacao_manual.csv`. |
-| `classificar` | `--somente-amostra` | `classificar_trechos` | Chama API OpenAI-compatible (`/chat/completions`) com retentativa automática (`429/500/502/503/504` e `Timeout/ConnectionError`) e checkpoint a cada 10 trechos. |
-| `importar-json` | `--arquivo`, `--modelo` | `importar_rotulos_json` | Valida e importa rótulos pré-classificados de um JSON (padrão `dados/tratados/rotulo_llm.json`) para `trechos_sentimento.csv`. |
-| `agregar` | `--permitir-parcial` | `agregar_sentimento` | Agrega escores por documento e mês; `--permitir-parcial` mantém documentos com ao menos 1 trecho classificado. |
-| `validar` | — | `validar_rotulacao` | Calcula kappa de Cohen entre rótulos humanos (`rotulacao_manual.csv`, aceitando rótulos textuais ou `-1/0/+1`, mínimo 200), LLM e léxico de referência, gravando `validacao_sentimento.csv`. |
+| `classificar` | `--batch-size`, `--intervalo`, `--modelo` | `classificar_trechos` | Classifica todos os trechos pendentes (`1.094` trechos de `238` documentos) via API OpenAI-compatible (`/chat/completions`) em lotes com controle de taxa, fallback automático de modelo Gemini em caso de cota RPD e checkpoint por lote. |
+| `importar-json` | `--arquivo`, `--modelo` | `importar_rotulos_json` | Valida e importa rótulos pré-classificados de um JSON (ex.: `rotulo_llm.json`) para `trechos_sentimento.csv`. |
+| `agregar` | — | `agregar_sentimento` | Exige `100%` dos trechos classificados (`1.094/1.094`) e agrega escores por documento (`238/238`) e mês (`149` meses). |
+| `validar` | — | `validar_rotulacao` | Exige que todos os documentos/trechos estejam classificados pela LLM e calcula o kappa de Cohen entre rótulos humanos (`rotulacao_manual.csv`, texto ou `-1/0/+1`, mínimo 200), LLM e léxico, gravando `validacao_sentimento.csv`. |
 
 ### 3.5 `src/modelagem_previsao.py` (`gerar_modelos`)
 - **Validação Walk-Forward (origem móvel):** janela de teste nos últimos `12` meses (`2025-10-01` a `2026-09-01`), horizontes $h \in \{1, 2, 3\}$ meses.

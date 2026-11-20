@@ -107,21 +107,9 @@ com uma avaliação positiva/negativa da economia. A planilha omite escores
 automáticos para manter a anotação cega e o script preserva os rótulos se a
 preparação for repetida.
 
-Para classificar os trechos via API OpenAI-compatible (ou importar rótulos já
-gerados em `dados/tratados/rotulo_llm.json`), configure `.env` (ou variáveis
-de ambiente `COPOM_LLM_API_KEY`, `COPOM_LLM_MODEL` e `COPOM_LLM_BASE_URL`):
-
-```powershell
-python src\analise_sentimento.py classificar --somente-amostra
-# ou importar JSON pronto e agregar mantendo documentos com amostra classificada:
-python src\analise_sentimento.py importar-json
-python src\analise_sentimento.py agregar --permitir-parcial
-python src\modelagem_previsao.py
-```
-
-Esse modo classifica apenas os 200 trechos de validação; a planilha manual não
-inclui previsões do LLM nem escores do léxico, para manter a anotação cega.
-Depois de concluir a validação, classifique todo o corpus e agregue:
+Para classificar todos os trechos dos 238 documentos via API OpenAI-compatible,
+configure `.env` (ou variáveis de ambiente `COPOM_LLM_API_KEY`,
+`COPOM_LLM_MODEL` e `COPOM_LLM_BASE_URL`) e execute a sequência completa (classificar todo o corpus, agregar, validar contra os 200 rótulos humanos de `rotulacao_manual.csv` e modelar):
 
 ```powershell
 python src\analise_sentimento.py classificar
@@ -132,15 +120,16 @@ python src\modelagem_previsao.py
 
 Também é possível usar um endpoint local compatível com a API de chat
 completions; nesse caso configure `COPOM_LLM_BASE_URL` para `localhost`.
-`validar` calcula o kappa de Cohen entre a amostra humana, o LLM e o léxico de
+Tanto `agregar` quanto `validar` exigem que 100% dos trechos de todos os 238
+documentos (`1.094` trechos) já tenham sido classificados pelo LLM. `validar`
+calcula o kappa de Cohen entre a amostra humana, o LLM e o léxico de
 referência e exige no mínimo 200 rótulos humanos válidos de documentos
-distintos. O léxico é um comparador simples, não substitui a validação. A
-agregação LLM por documento só ocorre quando todos os trechos desse documento
-foram classificados. Os escores são defasados em um mês na modelagem; meses sem
-nova publicação mantêm o último escore conhecido e registram zero documentos
-novos. `modelagem_previsao.py` gera
-`impacto_sentimento_sarimax.csv`, comparando previsões SARIMAX walk-forward de
-um mês com e sem sentimento, nos mesmos meses de teste.
+distintos. O léxico é um comparador simples, não substitui a validação. Os
+escores são defasados em um mês na modelagem; meses sem nova publicação mantêm
+o último escore conhecido e registram zero documentos novos.
+`modelagem_previsao.py` gera `impacto_sentimento_sarimax.csv`, comparando
+previsões SARIMAX walk-forward de um mês com e sem sentimento, nos mesmos meses
+de teste.
 
 O fluxo implementa a coleta de documentos oficiais do Copom. Notícias não são
 incluídas nesta versão. A rotulagem humana e a execução do LLM dependem de

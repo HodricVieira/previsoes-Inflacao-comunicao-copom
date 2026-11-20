@@ -30,6 +30,25 @@ CHUNK_SIZE = 3500
 MIN_MANUAL_LABELS = 200
 PROMPT_VERSION = "copom-tone-v1"
 VALID_LABELS = {"expansionista", "neutro", "contracionista"}
+GEMINI_FALLBACK_MODELS = [
+    "gemini-3.5-flash-lite",
+    "gemini-3.5-flash",
+    "gemini-3.6-flash",
+    "gemini-3.7-flash",
+    "gemini-3.8-flash",
+    "gemini-3.1-flash-lite-preview",
+    "gemini-flash-lite-latest",
+    "gemini-flash-latest",
+    "gemma-4-31b-it",
+    "gemma-4-26b-a4b-it",
+    "gemini-3.1-pro-preview",
+    "gemini-pro-latest",
+    "gemini-3-flash-preview",
+]
+
+
+class DailyQuotaExceededError(RuntimeError):
+    """Indica esgotamento da cota diária (RPD) do modelo na API."""
 
 LEXICON = {
     "contracionista": {
@@ -469,6 +488,146 @@ def _llm_configuration() -> tuple[str, str, str]:
     return base_url, api_key, model
 
 
+def _extract_json_payload(content: str) -> Any:
+    cleaned = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip())
+    try:
+        return json.loads(cleaned)
+    except json.JSONDecodeError:
+        match = re.search(r"(\[.*\]|\{.*\})", cleaned, flags=re.DOTALL)
+        if not match:
+            raise
+        return json.loads(match.group(0))
+
+
+def _extract_retry_delay(
+    response: requests.Response | None, attempt: int, model: str = ""
+) -> float:
+    if response is not None:
+        body = response.text or ""
+        if response.status_code == 429 and (
+            "PerDay" in body or "requests per day" in body.lower()
+        ):
+            raise DailyQuotaExceededError(
+                f"Cota diária (RPD) esgotada para o modelo {model or 'configurado'}."
+            )
+        retry_after = response.headers.get("Retry-After")
+        if retry_after:
+            try:
+                delay_val = float(retry_after)
+                if delay_val > 180.0:
+                    raise DailyQuotaExceededError(
+                        f"Tempo de espera muito longo ({delay_val:.0f}s) para {model}: cota esgotada."
+                    )
+                return max(delay_val + 1.0, 5.0)
+            except ValueError:
+                pass
+        match = re.search(
+            r"(?:retryDelay[\"']?\s*:\s*[\"']|retry in )([0-9]+(?:\.[0-9]+)?)s",
+            body,
+            flags=re.IGNORECASE,
+        )
+        if match:
+            delay_val = float(match.group(1))
+            if delay_val > 180.0:
+                raise DailyQuotaExceededError(
+                    f"Tempo de espera muito longo ({delay_val:.0f}s) para {model}: cota esgotada."
+                )
+            return max(delay_val + 2.0, 5.0)
+        if response.status_code == 429:
+            return 60.0
+    return float(2 ** (attempt + 1))
+
+
+def _post_chat_json(
+    session: requests.Session,
+    base_url: str,
+    api_key: str,
+    model: str,
+    system_prompt: str,
+    user_content: str,
+    max_attempts: int = 6,
+) -> Any:
+    headers = {"Content-Type": "application/json"}
+    if api_key:
+        headers["Authorization"] = f"Bearer {api_key}"
+    messages = (
+        [{"role": "user", "content": f"{system_prompt}\n\n{user_content}"}]
+        if model.lower().startswith("gemma")
+        else [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_content},
+        ]
+    )
+    payload = {
+        "model": model,
+        "temperature": 0,
+        "messages": messages,
+    }
+    last_exc: Exception | None = None
+    for attempt in range(max_attempts):
+        try:
+            response = session.post(
+                f"{base_url}/chat/completions",
+                headers=headers,
+                json=payload,
+                timeout=(15, 180),
+            )
+            if response.status_code in {429, 500, 502, 503, 504}:
+                raise requests.HTTPError(
+                    f"{response.status_code} {response.reason} para {response.url} "
+                    f"(modelo={model}): {response.text}",
+                    response=response,
+                )
+            if not response.ok:
+                raise requests.HTTPError(
+                    f"{response.status_code} {response.reason} para {response.url} "
+                    f"(modelo={model}): {response.text}",
+                    response=response,
+                )
+            content = response.json()["choices"][0]["message"]["content"]
+            if not isinstance(content, str):
+                raise ValueError("Resposta do LLM sem conteúdo textual.")
+            return _extract_json_payload(content)
+        except requests.HTTPError as exc:
+            status = exc.response.status_code if exc.response is not None else None
+            if status not in {429, 500, 502, 503, 504} or attempt == max_attempts - 1:
+                raise
+            last_exc = exc
+            delay = _extract_retry_delay(exc.response, attempt, model=model)
+            print(f"HTTP {status}; aguardando {delay:.1f}s antes de retentar...", flush=True)
+            time.sleep(delay)
+        except (
+            requests.exceptions.Timeout,
+            requests.exceptions.ConnectionError,
+            json.JSONDecodeError,
+            KeyError,
+            TypeError,
+            ValueError,
+        ) as exc:
+            last_exc = exc
+            if attempt < max_attempts - 1:
+                time.sleep(2 ** min(attempt + 1, 4))
+                continue
+            raise
+    assert last_exc is not None
+    raise last_exc
+
+
+def _validate_tone_item(raw: dict[str, Any]) -> tuple[float, float, str, str]:
+    score = float(raw["escore"])
+    confidence = float(raw["confianca"])
+    if not math.isfinite(score) or not -1 <= score <= 1:
+        raise ValueError(f"Escore LLM fora de [-1, 1]: {score}")
+    if not math.isfinite(confidence) or not 0 <= confidence <= 1:
+        raise ValueError(f"Confiança LLM fora de [0, 1]: {confidence}")
+    return (
+        score,
+        confidence,
+        str(raw.get("justificativa", "")).strip(),
+        _label_for_score(score),
+    )
+
+
 def _classify_with_llm(
     session: requests.Session,
     base_url: str,
@@ -487,109 +646,216 @@ def _classify_with_llm(
         "0 e 1 e justificativa curta em português. Versão do protocolo: "
         f"{PROMPT_VERSION}."
     )
-    headers = {"Content-Type": "application/json"}
-    if api_key:
-        headers["Authorization"] = f"Bearer {api_key}"
-    payload = {
-        "model": model,
-        "temperature": 0,
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": text},
-        ],
-    }
-    response = None
-    last_exc: Exception | None = None
-    for attempt in range(4):
-        try:
-            response = session.post(
-                f"{base_url}/chat/completions",
-                headers=headers,
-                json=payload,
-                timeout=(15, 180),
-            )
-            if response.status_code in {429, 500, 502, 503, 504} and attempt < 3:
-                time.sleep(2 ** (attempt + 1))
-                continue
-            break
-        except (requests.exceptions.Timeout, requests.exceptions.ConnectionError) as exc:
-            last_exc = exc
-            if attempt < 3:
-                time.sleep(2 ** (attempt + 1))
-                continue
-            raise
-    if response is None:
-        assert last_exc is not None
-        raise last_exc
-    if not response.ok:
-        raise requests.HTTPError(
-            f"{response.status_code} {response.reason} para {response.url} "
-            f"(modelo={model}): {response.text}",
-            response=response,
-        )
-    content = response.json()["choices"][0]["message"]["content"]
-    if not isinstance(content, str):
-        raise ValueError("Resposta do LLM sem conteúdo textual.")
-    content = re.sub(r"^```(?:json)?\s*|\s*```$", "", content.strip())
-    result = json.loads(content)
-    score = float(result["escore"])
-    confidence = float(result["confianca"])
-    if not math.isfinite(score) or not -1 <= score <= 1:
-        raise ValueError(f"Escore LLM fora de [-1, 1]: {score}")
-    if not math.isfinite(confidence) or not 0 <= confidence <= 1:
-        raise ValueError(f"Confiança LLM fora de [0, 1]: {confidence}")
-    return score, confidence, str(result["justificativa"]).strip(), _label_for_score(score)
+    result = _post_chat_json(session, base_url, api_key, model, system_prompt, text)
+    if not isinstance(result, dict):
+        raise ValueError("Resposta JSON do LLM deve ser um objeto.")
+    return _validate_tone_item(result)
 
 
-def classificar_trechos(sample_only: bool = False) -> pd.DataFrame:
-    """Classifica apenas trechos ainda sem escore usando API OpenAI-compatible."""
-    base_url, api_key, model = _llm_configuration()
-    chunks = preparar_trechos()
-    session = requests.Session()
-    is_pending = pd.to_numeric(chunks["escore_llm"], errors="coerce").isna()
-    if sample_only:
-        manual_path = DATA_DIR / "rotulacao_manual.csv"
-        manual = pd.read_csv(manual_path, encoding="utf-8-sig")
-        selected_ids = set(manual["trecho_id"])
-        is_pending &= chunks["trecho_id"].isin(selected_ids)
-    pending = chunks.index[is_pending]
-    for count, index in enumerate(pending, start=1):
-        result = _classify_with_llm(
-            session,
-            base_url,
-            api_key,
-            model,
-            str(chunks.at[index, "trecho_texto"]),
-        )
-        chunks.loc[
-            index,
-            [
-                "escore_llm",
-                "confianca_llm",
-                "justificativa_llm",
-                "rotulo_llm",
-                "modelo_llm",
-                "versao_prompt",
-            ],
-        ] = [
-            *result[:3],
-            result[3],
-            model,
-            PROMPT_VERSION,
-        ]
-        if count % 10 == 0 or count == len(pending):
-            chunks.to_csv(
-                DATA_DIR / "trechos_sentimento.csv",
-                index=False,
-                encoding="utf-8-sig",
-            )
-            print(f"Classificados {count}/{len(pending)} trechos pendentes.")
-
-    chunks.to_csv(
-        DATA_DIR / "trechos_sentimento.csv", index=False, encoding="utf-8-sig"
+def _classify_batch_with_llm(
+    session: requests.Session,
+    base_url: str,
+    api_key: str,
+    model: str,
+    items: list[tuple[str, str]],
+) -> dict[str, tuple[float, float, str, str]]:
+    """Classifica um lote de trechos em uma única chamada JSON mantendo escore individual."""
+    system_prompt = (
+        "Você analisa comunicação de política monetária do Banco Central do Brasil. "
+        "Para CADA trecho informado abaixo, classifique o TOM da decisão/viés monetário, "
+        "não se a economia está bem ou mal. Escala: -1 = expansionista (flexibilização/"
+        "juros menores); 0 = neutro/equilibrado; +1 = contracionista (aperto/juros maiores). "
+        "Considere o contexto e não classifique uma mera descrição de inflação como tom "
+        "se não houver implicação de política. Responda EXCLUSIVAMENTE um array JSON, "
+        "contendo exatamente um objeto por trecho com as chaves: "
+        '"trecho_id" (id exato informado), "escore" (número entre -1 e 1), '
+        '"confianca" (número entre 0 e 1) e "justificativa" (curta em português). '
+        f"Versão do protocolo: {PROMPT_VERSION}."
     )
-    print(f"Classificação concluída com o modelo {model}.")
+    user_content = "\n\n".join(
+        f"=== TRECHO {tid} ===\n{txt}" for tid, txt in items
+    )
+    parsed = _post_chat_json(session, base_url, api_key, model, system_prompt, user_content)
+    if isinstance(parsed, dict):
+        list_values = [v for v in parsed.values() if isinstance(v, list)]
+        if not list_values:
+            raise ValueError("Objeto JSON retornado pelo lote não contém lista de resultados.")
+        parsed = list_values[0]
+    if not isinstance(parsed, list):
+        raise ValueError("Resposta em lote deve ser um array JSON.")
+
+    expected_ids = {tid for tid, _ in items}
+    updates: dict[str, tuple[float, float, str, str]] = {}
+    for entry in parsed:
+        if not isinstance(entry, dict) or "trecho_id" not in entry:
+            continue
+        tid = str(entry["trecho_id"]).strip()
+        if tid not in expected_ids:
+            continue
+        try:
+            updates[tid] = _validate_tone_item(entry)
+        except (KeyError, TypeError, ValueError):
+            continue
+    return updates
+
+
+def classificar_trechos(
+    batch_size: int = 25,
+    min_interval_seconds: float = 4.5,
+    model_override: str | None = None,
+) -> pd.DataFrame:
+    """Classifica todos os trechos pendentes em lotes respeitando limite de taxa e cota."""
+    base_url, api_key, configured_model = _llm_configuration()
+    primary_model = model_override or configured_model
+    candidate_models = [primary_model]
+    if (
+        urlparse(base_url).hostname == "generativelanguage.googleapis.com"
+        and model_override is None
+    ):
+        for candidate in GEMINI_FALLBACK_MODELS:
+            if candidate not in candidate_models:
+                candidate_models.append(candidate)
+
+    chunks = preparar_trechos()
+    for col in ("justificativa_llm", "rotulo_llm", "modelo_llm", "versao_prompt"):
+        chunks[col] = chunks[col].astype("string").fillna("")
+
+    id_to_index = {str(tid): idx for idx, tid in chunks["trecho_id"].items()}
+    session = requests.Session()
+    last_request_at = 0.0
+    model_idx = 0
+
+    def _wait_rate_limit() -> None:
+        nonlocal last_request_at
+        if last_request_at > 0.0 and min_interval_seconds > 0.0:
+            elapsed = time.monotonic() - last_request_at
+            if elapsed < min_interval_seconds:
+                time.sleep(min_interval_seconds - elapsed)
+        last_request_at = time.monotonic()
+
+    def _call_with_model_fallback(caller):
+        nonlocal model_idx
+        while model_idx < len(candidate_models):
+            active_model = candidate_models[model_idx]
+            try:
+                _wait_rate_limit()
+                return active_model, caller(active_model)
+            except DailyQuotaExceededError as exc:
+                print(f"{exc} Tentando próximo modelo...", flush=True)
+                model_idx += 1
+            except requests.HTTPError as exc:
+                status = exc.response.status_code if exc.response is not None else None
+                if status in {400, 403, 404} and model_idx + 1 < len(candidate_models):
+                    print(
+                        f"Modelo {active_model} indisponível (HTTP {status}). Tentando próximo modelo...",
+                        flush=True,
+                    )
+                    model_idx += 1
+                else:
+                    raise
+        raise DailyQuotaExceededError(
+            f"Todos os modelos avaliados esgotaram a cota diária (RPD): {candidate_models}"
+        )
+
+    def _apply_and_save(
+        updates: dict[str, tuple[float, float, str, str]], used_model: str
+    ) -> int:
+        applied = 0
+        for tid, res in updates.items():
+            idx = id_to_index.get(tid)
+            if idx is None:
+                continue
+            chunks.loc[
+                idx,
+                [
+                    "escore_llm",
+                    "confianca_llm",
+                    "justificativa_llm",
+                    "rotulo_llm",
+                    "modelo_llm",
+                    "versao_prompt",
+                ],
+            ] = [res[0], res[1], res[2], res[3], used_model, PROMPT_VERSION]
+            applied += 1
+        chunks.to_csv(
+            DATA_DIR / "trechos_sentimento.csv", index=False, encoding="utf-8-sig"
+        )
+        return applied
+
+    def _pending_indices() -> list[int]:
+        mask = pd.to_numeric(chunks["escore_llm"], errors="coerce").isna()
+        return chunks.index[mask].tolist()
+
+    last_used_model = primary_model
+    for current_batch_size in (max(1, int(batch_size)), 5):
+        pending = _pending_indices()
+        if not pending:
+            break
+        total_batches = math.ceil(len(pending) / current_batch_size)
+        for batch_num, start in enumerate(range(0, len(pending), current_batch_size), start=1):
+            batch_indices = pending[start : start + current_batch_size]
+            items = [
+                (str(chunks.at[idx, "trecho_id"]), str(chunks.at[idx, "trecho_texto"]))
+                for idx in batch_indices
+            ]
+            used_model, updates = _call_with_model_fallback(
+                lambda m: _classify_batch_with_llm(session, base_url, api_key, m, items)
+            )
+            last_used_model = used_model
+            n_applied = _apply_and_save(updates, used_model)
+            total_done = int(pd.to_numeric(chunks["escore_llm"], errors="coerce").notna().sum())
+            print(
+                f"Lote {batch_num}/{total_batches} ({used_model}, tamanho {len(items)}): "
+                f"{n_applied} classificados | total {total_done}/{len(chunks)}.",
+                flush=True,
+            )
+
+    for idx in _pending_indices():
+        tid = str(chunks.at[idx, "trecho_id"])
+        used_model, res = _call_with_model_fallback(
+            lambda m: _classify_with_llm(
+                session, base_url, api_key, m, str(chunks.at[idx, "trecho_texto"])
+            )
+        )
+        last_used_model = used_model
+        _apply_and_save({tid: res}, used_model)
+        total_done = int(pd.to_numeric(chunks["escore_llm"], errors="coerce").notna().sum())
+        print(
+            f"Fallback individual {tid} ({used_model}): total {total_done}/{len(chunks)}.",
+            flush=True,
+        )
+
+    _assert_all_chunks_classified(chunks)
+    print(
+        f"Classificação integral concluída ({len(chunks)} trechos) com o modelo {last_used_model}."
+    )
     return chunks
+
+
+def _assert_all_chunks_classified(
+    chunks: pd.DataFrame, documents: pd.DataFrame | None = None
+) -> None:
+    """Exige que 100% dos trechos de todos os documentos estejam classificados pela LLM."""
+    if chunks.empty:
+        raise ValueError("trechos_sentimento.csv está vazio. Execute coletar e preparar.")
+    scores = pd.to_numeric(chunks["escore_llm"], errors="coerce")
+    labels = chunks["rotulo_llm"].astype("string").fillna("").str.strip().str.lower()
+    invalid_mask = scores.isna() | ~labels.isin(VALID_LABELS)
+    if invalid_mask.any():
+        n_missing = int(invalid_mask.sum())
+        n_docs = int(chunks.loc[invalid_mask, "documento_id"].nunique())
+        raise ValueError(
+            f"Classificação LLM incompleta: {n_missing}/{len(chunks)} trechos em "
+            f"{n_docs} documentos ainda não foram classificados. "
+            "Execute `python src\\analise_sentimento.py classificar` antes de agregar ou validar."
+        )
+    if documents is not None and not documents.empty:
+        missing_docs = set(documents["documento_id"]) - set(chunks["documento_id"])
+        if missing_docs:
+            raise ValueError(
+                f"{len(missing_docs)} documentos de documentos_copom.csv não possuem trechos "
+                "em trechos_sentimento.csv. Execute `preparar` e `classificar`."
+            )
 
 
 def importar_rotulos_json(
@@ -646,8 +912,8 @@ def importar_rotulos_json(
     return chunks
 
 
-def agregar_sentimento(allow_partial: bool = False) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Agrega escores por documento e mês de publicação."""
+def agregar_sentimento() -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Agrega escores por documento e mês de publicação exigindo classificação integral."""
     chunks_path = DATA_DIR / "trechos_sentimento.csv"
     documents_path = DATA_DIR / "documentos_copom.csv"
     if not chunks_path.exists() or not documents_path.exists():
@@ -656,6 +922,7 @@ def agregar_sentimento(allow_partial: bool = False) -> tuple[pd.DataFrame, pd.Da
     documents = pd.read_csv(
         documents_path, encoding="utf-8-sig", parse_dates=["data_publicacao"]
     )
+    _assert_all_chunks_classified(chunks, documents=documents)
     for column in ("escore_llm", "escore_lexico"):
         chunks[column] = pd.to_numeric(chunks[column], errors="coerce")
 
@@ -683,16 +950,10 @@ def agregar_sentimento(allow_partial: bool = False) -> tuple[pd.DataFrame, pd.Da
             validate="one_to_one",
         )
     )
-    if not allow_partial:
-        document_scores.loc[
-            document_scores["n_trechos_llm"] != document_scores["n_trechos"],
-            "escore_llm",
-        ] = np.nan
-    else:
-        document_scores.loc[
-            document_scores["n_trechos_llm"] == 0,
-            "escore_llm",
-        ] = np.nan
+    document_scores.loc[
+        document_scores["n_trechos_llm"] != document_scores["n_trechos"],
+        "escore_llm",
+    ] = np.nan
     document_scores.to_csv(
         DATA_DIR / "sentimento_documentos.csv",
         index=False,
@@ -857,11 +1118,21 @@ def _normalize_manual_label(series: pd.Series) -> pd.Series:
 
 
 def validar_rotulacao() -> pd.DataFrame:
-    """Calcula kappa contra o LLM e o léxico sem fabricar rótulos humanos."""
+    """Exige classificação LLM de todos os documentos e calcula kappa contra rótulos humanos."""
     manual_path = DATA_DIR / "rotulacao_manual.csv"
     chunks_path = DATA_DIR / "trechos_sentimento.csv"
+    documents_path = DATA_DIR / "documentos_copom.csv"
     if not manual_path.exists() or not chunks_path.exists():
         raise FileNotFoundError("Execute preparar e preencha rotulacao_manual.csv.")
+
+    chunks = pd.read_csv(chunks_path, encoding="utf-8-sig")
+    documents = (
+        pd.read_csv(documents_path, encoding="utf-8-sig")
+        if documents_path.exists()
+        else None
+    )
+    _assert_all_chunks_classified(chunks, documents=documents)
+
     manual = pd.read_csv(manual_path, encoding="utf-8-sig")
     manual["rotulo_manual"] = _normalize_manual_label(manual["rotulo_manual"])
     labeled = manual.loc[manual["rotulo_manual"].isin(VALID_LABELS)].copy()
@@ -875,7 +1146,6 @@ def validar_rotulacao() -> pd.DataFrame:
             "Os rótulos devem cobrir pelo menos 200 documentos distintos."
         )
 
-    chunks = pd.read_csv(chunks_path, encoding="utf-8-sig")
     labeled = labeled.merge(
         chunks[["trecho_id", "escore_llm", "rotulo_llm", "escore_lexico", "rotulo_lexico"]],
         on="trecho_id",
@@ -945,12 +1215,24 @@ def _main() -> None:
     collect.add_argument("--desde", default=DEFAULT_START_DATE)
     commands.add_parser("preparar", help="Cria trechos e amostra de rotulagem manual.")
     classify = commands.add_parser(
-        "classificar", help="Classifica trechos com LLM configurado."
+        "classificar", help="Classifica todos os trechos pendentes com LLM configurado."
     )
     classify.add_argument(
-        "--somente-amostra",
-        action="store_true",
-        help="Classifica apenas os 200 trechos separados para validação humana.",
+        "--batch-size",
+        type=int,
+        default=25,
+        help="Quantidade de trechos enviados por chamada JSON (padrão: 25).",
+    )
+    classify.add_argument(
+        "--intervalo",
+        type=float,
+        default=4.5,
+        help="Intervalo mínimo em segundos entre chamadas à API (padrão: 4.5s).",
+    )
+    classify.add_argument(
+        "--modelo",
+        default=None,
+        help="Modelo específico para sobrescrever COPOM_LLM_MODEL nesta execução.",
     )
     import_cmd = commands.add_parser(
         "importar-json",
@@ -966,13 +1248,8 @@ def _main() -> None:
         default="llm_externo_json",
         help="Identificador do modelo a registrar em modelo_llm.",
     )
-    agg_cmd = commands.add_parser("agregar", help="Gera escores por documento e mês.")
-    agg_cmd.add_argument(
-        "--permitir-parcial",
-        action="store_true",
-        help="Mantém escore de documentos com ao menos 1 trecho classificado (ex.: amostra de 200 docs).",
-    )
-    commands.add_parser("validar", help="Calcula kappa após a rotulagem manual.")
+    commands.add_parser("agregar", help="Gera escores por documento e mês (exige classificação completa).")
+    commands.add_parser("validar", help="Exige corpus classificado e calcula kappa com rotulação manual.")
     args = parser.parse_args()
 
     if args.command == "coletar":
@@ -980,11 +1257,15 @@ def _main() -> None:
     elif args.command == "preparar":
         preparar_trechos()
     elif args.command == "classificar":
-        classificar_trechos(sample_only=args.somente_amostra)
+        classificar_trechos(
+            batch_size=args.batch_size,
+            min_interval_seconds=args.intervalo,
+            model_override=args.modelo,
+        )
     elif args.command == "importar-json":
         importar_rotulos_json(Path(args.arquivo), model_name=args.modelo)
     elif args.command == "agregar":
-        agregar_sentimento(allow_partial=args.permitir_parcial)
+        agregar_sentimento()
     elif args.command == "validar":
         validar_rotulacao()
 

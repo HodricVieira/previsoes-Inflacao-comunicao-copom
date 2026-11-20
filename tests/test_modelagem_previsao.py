@@ -41,6 +41,15 @@ class TestModelagemPrevisao(unittest.TestCase):
                 self.assertLess(row["mase"], naive["mase"])
 
     def test_validacao_sentimento_200_rotulos_manuais_e_impacto_sarimax(self) -> None:
+        trechos = pd.read_csv(DATA_DIR / "trechos_sentimento.csv", encoding="utf-8-sig")
+        self.assertEqual(len(trechos), 1094)
+        self.assertTrue(trechos["escore_llm"].notna().all(), "Todos os 1.094 trechos devem estar classificados")
+
+        sdocs = pd.read_csv(DATA_DIR / "sentimento_documentos.csv", encoding="utf-8-sig")
+        self.assertEqual(len(sdocs), 238)
+        self.assertTrue(sdocs["escore_llm"].notna().all(), "Todos os 238 documentos devem ter escore LLM")
+        self.assertTrue((sdocs["n_trechos_llm"] == sdocs["n_trechos"]).all())
+
         valid_path = DATA_DIR / "validacao_sentimento.csv"
         self.assertTrue(valid_path.exists(), "validacao_sentimento.csv deve existir")
         valid_df = pd.read_csv(valid_path).set_index("comparacao")

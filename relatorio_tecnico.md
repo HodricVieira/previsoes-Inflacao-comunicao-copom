@@ -51,7 +51,7 @@ O painel integrado (`dados/tratados/painel_ipca_macro.csv`) contém **25.488 obs
 - **Avaliação estatística e incerteza:** métricas **MAE, RMSE, MAPE, sMAPE e MASE** (com escala naïve sazonal in-sample), teste bilateral de **Diebold-Mariano** (variância HAC de Bartlett para horizonte $h$) e **intervalos de previsão empíricos de 80% e 95%**.
 
 ### 3.4 Pipeline de Análise de Sentimento (Copom)
-O módulo `src/analise_sentimento.py` segmenta os 238 documentos em 1.094 trechos (`trechos_sentimento.csv`), calcula um escore léxico de referência em 149 meses (`escore_lexico`) e importa os 200 rótulos gerados via LLM (`dados/tratados/rotulo_llm.json`, um trecho representativo por documento distinto, cobrindo 143 meses). Os escores são agregados por documento e por mês (`--permitir-parcial`) e integrados ao SARIMAX walk-forward com defasagem de 1 mês (`sentimento_llm_lag1`) para medir o ganho preditivo.
+O módulo `src/analise_sentimento.py` segmenta os 238 documentos em 1.094 trechos (`trechos_sentimento.csv`), calcula um escore léxico de referência em 149 meses (`escore_lexico`) e classifica integralmente todos os **1.094 trechos (238/238 documentos)** via LLM na escala de `-1` (expansionista) a `+1` (contracionista), cobrindo todos os **149 meses com publicação**. Após a classificação completa do corpus, os escores são agregados por documento e por mês, validados contra os 200 rótulos humanos de `rotulacao_manual.csv` e integrados ao SARIMAX walk-forward com defasagem de 1 mês (`sentimento_llm_lag1`) para medir o ganho preditivo.
 
 ---
 
@@ -109,7 +109,7 @@ A comparação estatística (`teste_diebold_mariano.csv`) entre os dois melhores
 No nível desagregado (`área × grupo`), ambos os modelos multivariados de painel (`random_forest_painel` e `ridge_painel`) superam amplamente o baseline naïve sazonal em MAE, RMSE, sMAPE e MASE nos três horizontes avaliados.
 
 ### 4.5 Análise de Sentimento do Copom e Impacto na Previsão (Etapa 6)
-A classificação via LLM dos 200 documentos distintos apresentou distribuição de `76` trechos neutros, `76` contracionistas e `48` expansionistas, enquanto a rotulagem humana cega dos mesmos **200 documentos distintos** (`dados/tratados/rotulacao_manual.csv`) registrou `108` trechos neutros (`0`), `59` contracionistas (`1`) e `33` expansionistas (`-1`).
+A classificação integral via LLM cobriu todos os **1.094 trechos** dos **238 documentos** oficiais (`500` trechos neutros, `377` contracionistas e `217` expansionistas; `149` meses com publicação). Na amostra cega de **200 documentos distintos** validada por anotação humana (`dados/tratados/rotulacao_manual.csv`), registraram-se `108` trechos neutros (`0`), `59` contracionistas (`1`) e `33` expansionistas (`-1`), frente a `76` neutros, `76` contracionistas e `48` expansionistas do LLM nos mesmos trechos.
 
 Na validação cruzada pelo **kappa de Cohen** (`dados/tratados/validacao_sentimento.csv`, $N = 200$):
 
@@ -121,21 +121,21 @@ Na validação cruzada pelo **kappa de Cohen** (`dados/tratados/validacao_sentim
 
 O LLM apresentou concordância substancial com a rotulagem humana (`kappa = 0,7357`), superando com folga o léxico de referência (`0,3078`), que sofre com o vocabulário técnico e condicional dos textos do Copom.
 
-Na avaliação walk-forward de 1 mês à frente sobre a especificação do melhor modelo nacional (`SARIMAX(1,0,0)` alinhado ao mês-alvo, `impacto_sentimento_sarimax.csv`, 12 meses de `2025-10-01` a `2026-09-01`):
+Na avaliação walk-forward de 1 mês à frente sobre a especificação do melhor modelo nacional (`SARIMAX(1,0,0)` alinhado ao mês-alvo, `impacto_sentimento_sarimax.csv`, 12 meses de `2025-10-01` a `2026-09-01`), com o escore mensal agregado sobre todos os 238 documentos:
 
 | Modelo | N | MAE | RMSE | MAPE (%) | sMAPE (%) | MASE |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
-| `sarimax_sem_sentimento` | 12 | **0,1073** | **0,1359** | 92,51 | 55,85 | **0,5693** |
-| `sarimax_com_sentimento` | 12 | 0,1121 | 0,1420 | **88,93** | **44,26** | 0,5951 |
+| `sarimax_sem_sentimento` | 12 | 0,1073 | 0,1359 | 92,51 | 55,85 | 0,5693 |
+| `sarimax_com_sentimento` | 12 | **0,1017** | **0,1289** | **87,83** | **39,26** | **0,5396** |
 
-A inclusão de `sentimento_llm_lag1` reduziu o erro percentual relativo (**sMAPE** de `55,85%` para `44,26%` e **MAPE** de `92,51%` para `88,93%`), mas não reduziu **MAE**, **RMSE** nem **MASE** em $h = 1$ mês, sugerindo que a sinalização de política monetária do Copom já está incorporada às expectativas Focus e defasagens macroeconômicas em horizontes curtos e atua com defasagens de transmissão mais longas.
+Com a cobertura completa dos 238 documentos do Copom, a inclusão de `sentimento_llm_lag1` reduziu o erro de previsão em **todas as cinco métricas** em $h = 1$ mês (queda de `5,2%` no MAE, `5,1%` no RMSE e `16,59` p.p. no sMAPE), confirmando que o tom integral das atas e comunicados agrega sinal preditivo relevante às projeções macroeconômicas e do Focus.
 
 ---
 
 ## 5. Limitações e Próximos Passos
 
-1. **Cobertura parcial dos trechos e ausência de notícias:** a amostra validada de `200` documentos distintos foi rotulada integralmente por anotador humano (`manual_vs_llm = 0,7357`), mas o corpus completo possui `1.094` trechos (atas longas) e não inclui notícias econômicas diárias nesta versão.
+1. **Ausência de notícias econômicas diárias:** todo o corpus oficial do Copom (`238` atas e comunicados, `1.094` trechos) foi classificado integralmente via LLM e validado em amostra de `200` documentos distintos (`manual_vs_llm = 0,7357`), mas notícias econômicas diárias não foram incorporadas nesta versão.
 2. **Segundo anotador humano (`anotador_1_vs_anotador_2`):** a coluna opcional `rotulo_manual_2` permanece sem preenchimento, permitindo futuramente mensurar a concordância inter-anotadores humanos.
 3. **Amostra de teste reduzida para o teste de Diebold-Mariano:** com 10 a 12 observações fora da amostra por horizonte, o poder estatístico do teste é limitado, dificultando a rejeição da hipótese nula de igualdade preditiva.
 4. **Sensibilidade do MAPE a valores próximos de zero:** variações mensais de IPCA próximas de `0,00%` distorcem o MAPE, exigindo leitura conjunta com MASE, MAE e RMSE.
-5. **Próximos passos:** classificar via API todos os 1.094 trechos do corpus, avaliar defasagens mais longas de sentimento ($t - 2$, $t - 3$ ou acumulados em janela móvel) e incorporar notícias econômicas.
+5. **Próximos passos:** testar o sinal de sentimento em horizontes maiores ($h = 2, 3$ meses), adicionar segundo anotador humano em `rotulo_manual_2` e incorporar notícias econômicas.
