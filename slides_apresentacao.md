@@ -114,7 +114,6 @@ A inclusão de `sentimento_llm_lag1` reduziu o erro em **todas as métricas** (`
 
 ## 9. Limitações e Próximos Passos
 
-- **Validação humana (1 anotador):** 200 textos validados (`kappa = 0,7357`); falta apenas eventual 2º anotador (`rotulo_manual_2`).
 - **Fontes textuais:** todo o corpus oficial do Copom (`1.094` trechos) foi classificado; próximo passo é incorporar notícias econômicas.
 - **Métricas:** usar MASE/sMAPE em vez de MAPE devido a valores de IPCA próximos de zero.
 - **Amostra de teste:** ampliar a janela fora da amostra para maior poder no teste de Diebold-Mariano.
